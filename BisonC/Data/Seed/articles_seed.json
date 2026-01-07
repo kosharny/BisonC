@@ -1,0 +1,180 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "Shadows over the prairies: the disappearance of bison in the 19th century.",
+      "coverImage": "1",
+      "category": "Timeline",
+      "summary": "In the 19th century, the American prairies were home to millions of bison.",
+      "content": "In the 19th century, the American prairies were home to millions of bison. For indigenous peoples, they were a source of food, clothing and spiritual strength. But with the advent of railroads and mass hunting, herds began to disappear rapidly. The disappearance of bison was a blow to the ecosystem: the vegetation, the balance of animals and the cultural life of the tribes changed. But already at the beginning of the 20th century, the first steps towards salvation began - the creation of reserves and breeding programs. Thanks to these efforts, the bison was saved and gradually returned to nature.",
+      "tags": ["NatureProtection", "HistoryofBison", "Prairies"],
+      "readTime": 5,
+      "yearPeriod": "1800–1900"
+    },
+    {
+      "id": "2",
+      "title": "Bison as a spirit of power: myths and symbols among tribe",
+      "coverImage": "2",
+      "category": "Myths & Facts",
+      "summary": "For indigenous tribes, the bison was a sacred creature.",
+      "content": "For indigenous tribes, the bison was a sacred creature. His image was found in legends, rituals and symbols, reflecting strength and endurance. The animal personified the harmony of man with nature. Myths about bison helped preserve traditions and strengthen the spiritual peace of communities. They explained the origin of the world and gave people a sense of stability. Tribes transmitted knowledge and values ​​through legends. The bison was not only a source of food and materials, but also a symbol of abundance. His presence strengthened faith in the stability of peace and security. He was perceived as a mediator between man and nature. The transmission of myths from generation to generation preserved the cultural heritage. They formed the identity of the tribes and strengthened the connection with the past. Bison remained the center of spiritual life.",
+      "tags": ["SymbolofStrength", "IndigenousPeoples", "Myths"],
+      "readTime": 5,
+      "yearPeriod": "Before 1800"
+    },
+    {
+      "id": "3",
+      "title": "The return of the giant: conservation of nature in the 20th century",
+      "coverImage": "3",
+      "category": "Conservation",
+      "summary": "After the almost complete disappearance of bison, the first programs to preserve them began.",
+      "content": "After the almost complete disappearance of bison, the first programs to preserve them began. Scientists and activists played a key role in this process. They understood that without intervention the species would disappear forever. Nature reserves were created and captive breeding was carried out. These measures made it possible to gradually increase the number of animals. The restoration was long and required great efforts. By the middle of the 20th century, bison reappeared in national parks. His return became a symbol of the rebirth of nature. People saw that protection can be successful. These efforts showed that a person is capable of correcting the consequences of his own actions. Although the restoration took ten years, the result inspired new generations. The bison again became part of the ecosystem.",
+      "tags": ["NatureProtection", "Biodiversity", "WildLife"],
+      "readTime": 5,
+      "yearPeriod": "1900–1950"
+    },
+    {
+      "id": "4",
+      "title": "Bison in the culture of indigenous peoples: from rituals to legends",
+      "coverImage": "4",
+      "category": "Culture & Tribes",
+      "summary": "For indigenous peoples, the bison was not only a source of food, but also an important symbol of spiritual power.",
+      "content": "For indigenous peoples, the bison was not only a source of food, but also an important symbol of spiritual power. His image was found in rituals, dances and legends, reflecting the human connection with nature and spirits. The animal was perceived as an intermediary between the earth and the sky, and its presence was considered a sign of abundance. Rituals with the participation of bison strengthened the belief in the stability of the world. People believed that the spirit of the bison protects the tribe and gives it strength. In dances and songs, the animal symbolized endurance and resilience. Legends about the bison explained the origin of the world and gave people a sense of stability. Through myths, tribes transmitted knowledge and values, forming a cultural heritage. Bison was an integral part of spiritual life. The transmission of traditions from generation to generation preserved the identity of the tribes. The bison remained the center of their culture, uniting people and strengthening their connection with nature.",
+      "tags": ["IndigenousPeoples", "SymbolofStrength", "Myths"],
+      "readTime": 5,
+      "yearPeriod": "Before 1800"
+    },
+    {
+      "id": "5",
+      "title": "Footprint: bison in art and folklore of the 20th century",
+      "coverImage": "5",
+      "category": "Culture & Tribes",
+      "summary": "In the 20th century, the image of the bison was actively used in art and folklore.",
+      "content": "In the 20th century, the image of the bison was actively used in art and folklore. Ego was depicted in paintings, songs and literature as a symbol of the past and power. Artists sought to show the greatness of the animal and its importance for culture. Folk images preserved the memory of the times when herds covered the prairies. Through stories and songs, people reminded themselves of the lost harmony with nature. The bison became a symbol of resistance and endurance. In literature and cinema, the bison often appeared as a symbol of national memory. His image connected modernity with history and traditions. Thus, the art of the 20th century turned the bison into a cultural symbol. It became part of collective consciousness and national identity.",
+      "tags": ["Hoofprint", "Myths", "SymbolofStrength"],
+      "readTime": 5,
+      "yearPeriod": "1900–1950"
+    },
+    {
+      "id": "6",
+      "title": "Bison and the railroad: a clash of eras",
+      "coverImage": "6",
+      "category": "Timeline",
+      "summary": "The construction of railways changed the fate of bison.",
+      "content": "The construction of railways changed the fate of bison. Trains opened up access to previously hard-to-reach areas, and hunting became massive. Skins and meat became a commodity, and the destruction of herds accelerated. Mass shooting at herds sometimes turned into entertainment. Train passengers shot animals directly from the windows of the carriages. This increased the destruction of the prairie ecosystem. For indigenous peoples, the disappearance of bison became a cultural catastrophe. Their way of life was destroyed, and their traditions were under threat. Railroads symbolized progress, but for nature they became a source of tragedy. Bison was a victim of the industrial age.",
+      "tags": ["HistoryofBison", "Prairies", "WildLife"],
+      "readTime": 5,
+      "yearPeriod": "1800–1900"
+    },
+    {
+      "id": "7",
+      "title": "Myths about bison: truth and fiction in the XXI century",
+      "coverImage": "7",
+      "category": "Myths & Facts",
+      "summary": "Today, there are many myths surrounding the bison.",
+      "content": "Today, there are many myths surrounding the bison. Some romanticize his image as a symbol of freedom and strength. Others rely on scientific facts, explaining the real role of the animal in the ecosystem. Modern media reinforce the mythologizing of the image of the bison. It is often used as a cultural symbol in films and books. Research helps separate legends from reality. Scientists show that the bison plays an important role in nature conservation. Thus, the image of an animal combines myths and facts. It remains significant for culture and science.",
+      "tags": ["Myths", "SymbolofStrength", "HistoryofBison"],
+      "readTime": 5,
+      "yearPeriod": "1950–now"
+    },
+    {
+      "id": "8",
+      "title": "Bison as a national symbol: from the coat of arms to the logo",
+      "coverImage": "8",
+      "category": "Culture & Tribes",
+      "summary": "The image of the bison became part of the national identity.",
+      "content": "The image of the bison became part of the national identity. Ego can be seen on coats of arms, logos and emblems. The animal symbol is used as a sign of strength and stability. The bison has become an element of cultural and brand heritage. His image strengthens the national memory and connection with nature. The use of bison in symbolism shows the desire to preserve historical roots. It became a sign of unity and stability. Thus, the bison turned into a national symbol. His image unites the past and the present.",
+      "tags": ["SymbolofStrength", "HistoryofBison", "WildLife"],
+      "readTime": 5,
+      "yearPeriod": "1950–now"
+    },
+    {
+      "id": "9",
+      "title": "Where did they live: map of bison habitats",
+      "coverImage": "9",
+      "category": "Places",
+      "summary": "Until the 19th century, bison inhabited vast territories of North America.",
+      "content": "Until the 19th century, bison inhabited vast territories of North America. Their habitats extended from prairies to forest valleys. Animals formed the ecosystem and maintained the balance of nature. These places were the basis of people's lives. Natural habitats preserved harmony between man and the animal world. The disappearance of herds changed the nature and culture of the regions. Prairies lost their usual shape, and peoples were left with a resource. Today, area maps help to understand the extent of the loss. They show the connection between nature and culture.",
+      "tags": ["Prairies", "WildLife", "Biodiversity"],
+      "readTime": 5,
+      "yearPeriod": "Before 1800"
+    },
+    {
+      "id": "10",
+      "title": "Bison in the era of digital nature conservation",
+      "coverImage": "10",
+      "category": "Conservation",
+      "summary": "Modern technologies help save bison.",
+      "content": "Modern technologies help save bison. Satellites, sensors and drones are used to monitor populations. This makes protection more accurate and effective. Digital methods allow tracking the migration and health of herds. Scientists receive new data for research. Technologies help prevent threats of extinction. They make it possible to monitor the condition of animals. Thus, innovations have become an important tool for environmental protection. Bison became an example of successful application of technologies.",
+      "tags": ["NatureProtection", "Biodiversity", "WildLife"],
+      "readTime": 5,
+      "yearPeriod": "1950–now"
+    },
+    {
+      "id": "11",
+      "title": "Where a heavy hoof steps",
+      "coverImage": "11",
+      "category": "Places",
+      "summary": "Before the advent of industrialization, bison roamed freely across the endless prairies of North America.",
+      "content": "Before the advent of industrialization, bison roamed freely across the endless prairies of North America. Their routes shaped the landscape: paths trampled by hooves turned into roads, and resting places into future settlements. These territories were not just geographical points, but living zones of interaction of nature and culture. The habitats of bison ranged from the Great Plains to forest valleys, including seasonal migrations. They chose areas with rich vegetation and access to water, which made their habitats key for other species. The presence of bison determined the ecosystem: from the distribution of plants to the behavior of predators. With the disappearance of herds, these places have changed. Prairies have become quieter, vegetation is denser, and ecosystems are less stable. Some areas were built up, others turned into agricultural land. Today, maps of historical areas help restore ecological memory. They show how nature and culture were connected through the movement of hooves.",
+      "tags": ["Prairies", "History", "Nature"],
+      "readTime": 5,
+      "yearPeriod": "Before 1800"
+    },
+    {
+      "id": "12",
+      "title": "Tales of a great beast",
+      "coverImage": "12",
+      "category": "Myths & Facts",
+      "summary": "The bison is one of the most mythologized animals of North America.",
+      "content": "The bison is one of the most mythologized animals of North America. In legends, he appears as a spirit of power, a protector of the tribe or a messenger of the gods. His image is often associated with rituals of fertility, desire, and purification. Myths about the bison were transmitted orally, through dances, songs and stories. They explained the origin of the world, taught respect for nature and reminded of the balance between man and the earth. In some stories, the bison sacrifices itself for the sake of the people's survival. With the arrival of Europeans, myths began to mix with new interpretations. The bison became a symbol of the lost world, a romanticized image of freedom and wildness. The figure of the ego penetrated into literature, cinema and popular culture. Modern myths often break away from reality, but retain emotional power. They continue to inspire and unite, even if biological accuracy is lost.",
+      "tags": ["Myths", "Folklore", "Tradition"],
+      "readTime": 5,
+      "yearPeriod": "1900–now"
+    },
+    {
+      "id": "13",
+      "title": "Bison in the culture of indigenous peoples",
+      "coverImage": "13",
+      "category": "Culture & Tribes",
+      "summary": "For indigenous peoples, the bison was an integral part of life - physical, spiritual and social.",
+      "content": "For indigenous peoples, the bison was an integral part of life - physical, spiritual and social. He provided food, materials for clothing and housing, and also inspired rituals and beliefs. His image was woven into everyday life and sacred practices. Every part of the bison's body was used with respect: bones for tools, horns for decorations, hides for tents. Hunting was accompanied by rites of thanksgiving, and the death of an animal was perceived as a gift. In songs and dances, the bison symbolized strength, endurance and protection. The ego figure appeared on totems, masks and ritual objects. Through it, the tribes expressed their connection with the earth and spirits. With the disappearance of herds, culture underwent changes. Many rituals lost their basis, and the image of the bison became a symbol of loss and resistance.",
+      "tags": ["IndigenousPeoples", "Culture", "Spirituality"],
+      "readTime": 7,
+      "yearPeriod": "Before 1800"
+    },
+    {
+      "id": "14",
+      "title": "The return of the great beast",
+      "coverImage": "14",
+      "category": "Conservation",
+      "summary": "By the beginning of the 20th century, the bison was on the verge of extinction.",
+      "content": "By the beginning of the 20th century, the bison was on the verge of extinction. Of the millions of individuals, only hundreds remained, scattered on private ranches and nature reserves. This became an alarming signal for scientists and nature defenders. The first programs to restore the population began. Protected territories were created, initiatives were launched to breed and return animals to the wild environment. Recovery was slow but steady. A key role was played by national parks such as Yellowstone, where bison got a chance to survive. Gradually, they began to return to nature, restoring ecosystems and cultural significance. Today, bison conservation includes genetic control, health monitoring and interaction with local communities. This is an example of how a person can correct the consequences of his own actions.",
+      "tags": ["Conservation", "NatureProtection", "Restoration"],
+      "readTime": 8,
+      "yearPeriod": "1900–1950"
+    },
+    {
+      "id": "15",
+      "title": "Diversity of forces: types of bison in nature",
+      "coverImage": "15",
+      "category": "Species",
+      "summary": "There are two main types of bison: American and European.",
+      "content": "There are two main types of bison: American and European. Despite the external similarity, they differ in behavior, habitat and genetics. The American bison is more massive, and the European bison is more slender and is more often found in forests. Different populations have adapted to their conditions: from open prairies to mountain valleys. Some herds preserve unique features associated with the climate and history of the region. Genetic diversity has become an important factor in conservation programs. Scientists track genealogies to avoid degeneration and preserve the stability of the species. The diversity of bison is not only biological, but also cultural wealth. Each type is associated with certain myths, landscapes and peoples.",
+      "tags": ["Species", "Biology", "WildLife"],
+      "readTime": 5,
+      "yearPeriod": "Before 1800"
+    },
+    {
+      "id": "16",
+      "title": "A hoof mark through the eyelids",
+      "coverImage": "16",
+      "category": "Timeline",
+      "summary": "The history of the bison is a series of clashes between nature and civilization.",
+      "content": "The history of the bison is a series of clashes between nature and civilization. His path goes through the ages: from a sacred animal to an almost extinct species. Each generation left its mark on the fate of the great beast. In the 19th century, the bison became a victim of industrial progress. Mass hunting, railroads, and expansion led to a catastrophic population decline. The prairies were deserted, and the culture of the tribes was disturbed. The 20th century brought hope: restoration programs, scientific research and cultural rethinking began. The bison reappeared in nature reserves and became a symbol of nature conservation. Today, his image is not only a biological species, but also a cultural marker. It reminds of the past, shapes the present and inspires the future.",
+      "tags": ["History", "Timeline", "Survival"],
+      "readTime": 5,
+      "yearPeriod": "1800–now"
+    }
+  ]
+}

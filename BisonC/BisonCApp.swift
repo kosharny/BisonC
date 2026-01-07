@@ -10,12 +10,16 @@ import CoreData
 
 @main
 struct BisonCApp: App {
-    let persistenceController = PersistenceController.shared
-
+    let container = PersistenceController.shared.container
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(\.managedObjectContext, container.viewContext)
+                .task {
+                    let importer = SeedImportService(container: container)
+                    try? await importer.importIfNeeded()
+                }
         }
     }
 }

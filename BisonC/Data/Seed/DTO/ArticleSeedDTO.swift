@@ -1,5 +1,5 @@
 //
-//  Article.swift
+//  ArticleSeedDTO.swift
 //  BisonC
 //
 //  Created by Maksim Kosharny on 07.01.2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Article: Identifiable, Codable {
+struct ArticleSeedDTO: Decodable {
     let id: String
     let title: String
     let coverImage: String?
@@ -17,8 +17,5 @@ struct Article: Identifiable, Codable {
     let tags: [String]
     let readTime: Int
     let yearPeriod: String?
-    let sources: [Source]
-    
-    var isFavorite: Bool = false
-    var lastOpenedDate: Date? = nil
+    let sources: [SourceSeedDTO]?
 }
