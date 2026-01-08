@@ -1,0 +1,47 @@
+//
+//  MainTabView.swift
+//  BisonC
+//
+//  Created by Maksim Kosharny on 07.01.2026.
+//
+
+import SwiftUI
+
+struct MainTabView: View {
+    
+    var body: some View {
+        TabView {
+            HomeView()
+                .tabItem {
+                    Image("home")
+                }
+            
+            Text("Favorites")
+                .tabItem {
+                    Image("favorites")
+                }
+            
+            Text("History")
+                .tabItem {
+                    Image("history")
+                }
+            
+            Text("Statistics")
+                .tabItem {
+                    Image("statistics")
+                }
+            
+            Text("Settings")
+                .tabItem {
+                    Image("settings")
+                }
+        }
+        .toolbarBackground(.thickMaterial, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
+    }
+}
+
+
+#Preview {
+    MainTabView()
+}
