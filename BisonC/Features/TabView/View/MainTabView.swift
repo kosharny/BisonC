@@ -16,7 +16,7 @@ struct MainTabView: View {
                     Image("home")
                 }
             
-            Text("Favorites")
+            FavoritesView()
                 .tabItem {
                     Image("favorites")
                 }

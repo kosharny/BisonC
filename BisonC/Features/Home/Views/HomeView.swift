@@ -11,10 +11,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("appBackground")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
+                BackgroundView()
                 
                 VStack {
                     HStack {
