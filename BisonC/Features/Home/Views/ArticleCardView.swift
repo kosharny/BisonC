@@ -57,18 +57,4 @@ struct ArticleCardView: View {
     }
 }
 
-struct CategoryTagView: View {
-    let title: String
-    
-    var body: some View {
-        Text(title)
-            .font(.customInriaSans(.regular, size: 16))
-            .foregroundStyle(.beigeApp)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(
-                Capsule()
-                    .fill(Color.lightBrownAppColor)
-            )
-    }
-}
+

@@ -1,0 +1,93 @@
+//
+//  FavoriteArticleCardView.swift
+//  BisonC
+//
+//  Created by Maksim Kosharny on 08.01.2026.
+//
+
+import SwiftUI
+
+struct FavoriteArticleCardView: View {
+    
+    let imageName: String
+    let title: String
+    let description: String
+    let category: String
+    let readTime: String
+    
+    let onRemove: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            
+            Image(imageName)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 120)
+                .clipped()
+            
+            VStack(alignment: .leading, spacing: 10) {
+                
+                Text(title)
+                    .font(.customInriaSans(.bold, size: 20))
+                    .foregroundStyle(.darkTextApp)
+                
+                Text(description)
+                    .font(.customInriaSans(.light, size: 14))
+                    .foregroundStyle(.darkTextApp)
+                    .lineLimit(2)
+                
+                HStack {
+                    
+                    CategoryTagView(title: category)
+                        .frame(minWidth: 120, minHeight: 50)
+                    
+                    Spacer()
+                    
+                    Text(readTime)
+                        .font(.customInriaSans(.light, size: 12))
+                        .foregroundStyle(.darkTextApp)
+                }
+                HStack {
+                    Spacer()
+                    
+                    Button(action: onRemove) {
+                        
+                        HStack {
+                            Text("Remove From Favorites")
+                                .font(.customInriaSans(.bold, size: 14))
+                                .foregroundStyle(.beigeApp)
+                            
+                            Image(systemName: "trash.circle.fill")
+                                .foregroundStyle(.beigeApp)
+                        }
+                        .padding()
+                        .background(
+                            Capsule()
+                                .fill(Color.redAppColor)
+                        )
+                    }
+                }
+                
+                
+                
+                Spacer(minLength: 0)
+            }
+            .padding(16)
+            
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity, maxHeight: 200)
+        .background(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(Color.brownAppFav)
+        )
+        .clipShape(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 22)
+                .stroke(Color.brownApp.opacity(0.5))
+        )
+    }
+}
