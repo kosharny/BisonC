@@ -28,12 +28,12 @@ struct ArticleCardView: View {
             
             Text(title)
                 .font(.customInriaSans(.bold, size: 18))
-                .foregroundStyle(.darkTextApp)
+                .foregroundStyle(.darkTextTitleApp)
                 .lineLimit(2)
             
             Text(readTime)
                 .font(.customInriaSans(.light, size: 16))
-                .foregroundStyle(.darkTextApp)
+                .foregroundStyle(.darkTextTitleApp)
             
             HStack {
                 CategoryTagView(title: category)
@@ -44,7 +44,7 @@ struct ArticleCardView: View {
                     // toggle favorite
                 } label: {
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .foregroundStyle(.brownApp)
+                        .foregroundStyle(.brownAppCat)
                 }
             }
         }
@@ -52,6 +52,7 @@ struct ArticleCardView: View {
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.beigeApp)
+                .shadow(radius: 4, x: 0, y: 4)
         )
         .frame(width: 260)
     }
