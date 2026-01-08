@@ -26,7 +26,7 @@ struct MainTabView: View {
                     Image("history")
                 }
             
-            Text("Statistics")
+            StatsView()
                 .tabItem {
                     Image("statistics")
                 }
