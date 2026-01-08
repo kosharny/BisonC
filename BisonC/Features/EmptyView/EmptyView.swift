@@ -9,13 +9,14 @@ import SwiftUI
 
 struct EmptyView: View {
     var isFavorites: Bool = false
+    let title: String
     
     var body: some View {
         VStack {
             Image("emptyBg")
                 .resizable()
                 .scaledToFit()
-            Text("No favorites yet")
+            Text(title)
                 .font(.customPlayfairDisplay(.bold, size: 20))
                 .foregroundStyle(.brownApp)
             
@@ -42,5 +43,5 @@ struct EmptyView: View {
 }
 
 #Preview {
-    EmptyView()
+    EmptyView(title: "No favorites yet")
 }
