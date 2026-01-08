@@ -64,7 +64,7 @@ struct FavoriteArticleCardView: View {
                         .padding()
                         .background(
                             Capsule()
-                                .fill(Color.redAppColor)
+                                .fill(Color.redAppColor.opacity(0.5))
                         )
                     }
                 }
@@ -80,14 +80,14 @@ struct FavoriteArticleCardView: View {
         .frame(maxWidth: .infinity, maxHeight: 200)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.brownAppFav)
+                .fill(Color.beigeAppCat)
         )
         .clipShape(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 22)
-                .stroke(Color.brownApp.opacity(0.5))
+                .stroke(Color.beigeApp.opacity(0.5))
         )
     }
 }

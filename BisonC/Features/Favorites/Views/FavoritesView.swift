@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    let isFavoritesEmpty: Bool = true
+    let isFavoritesEmpty: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -27,7 +27,8 @@ struct FavoritesView: View {
                     .padding()
                     if isFavoritesEmpty {
                         Spacer()
-                        EmptyView(isFavorites: true)
+                        EmptyView(isFavorites: true, title: "No favorites yet")
+                            .padding(.bottom, getSafeAreaBottom() + 40)
                         Spacer()
                     } else {
                         ScrollView(showsIndicators: false) {
