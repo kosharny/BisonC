@@ -14,7 +14,7 @@ struct BisonCApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
                 .environment(\.managedObjectContext, container.viewContext)
                 .task {
                     let importer = SeedImportService(container: container)
