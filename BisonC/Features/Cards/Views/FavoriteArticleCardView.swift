@@ -17,6 +17,8 @@ struct FavoriteArticleCardView: View {
     
     let onRemove: () -> Void
     
+    var isResultsSerachView = false
+    
     var body: some View {
         HStack(spacing: 0) {
             
@@ -50,22 +52,40 @@ struct FavoriteArticleCardView: View {
                 }
                 HStack {
                     Spacer()
-                    
-                    Button(action: onRemove) {
-                        
-                        HStack {
-                            Text("Remove From Favorites")
-                                .font(.customInriaSans(.bold, size: 14))
-                                .foregroundStyle(.beigeApp)
+                    if isResultsSerachView {
+                        Button(action: onRemove) {
                             
-                            Image(systemName: "trash.circle.fill")
-                                .foregroundStyle(.beigeApp)
+                            HStack {
+                                Text("View details")
+                                    .font(.customInriaSans(.bold, size: 14))
+                                    .foregroundStyle(.brownApp)
+                                
+                                Image(systemName: "arrow.right")
+                                    .foregroundStyle(.brownApp)
+                            }
+                            .padding()
+                            .background(
+                                Capsule()
+                                    .fill(Color.brownApp.opacity(0.2))
+                            )
                         }
-                        .padding()
-                        .background(
-                            Capsule()
-                                .fill(Color.redAppColor.opacity(0.5))
-                        )
+                    } else {
+                        Button(action: onRemove) {
+                            
+                            HStack {
+                                Text("Remove From Favorites")
+                                    .font(.customInriaSans(.bold, size: 14))
+                                    .foregroundStyle(.beigeApp)
+                                
+                                Image(systemName: "trash.circle.fill")
+                                    .foregroundStyle(.beigeApp)
+                            }
+                            .padding()
+                            .background(
+                                Capsule()
+                                    .fill(Color.redAppColor.opacity(0.5))
+                            )
+                        }
                     }
                 }
                 
