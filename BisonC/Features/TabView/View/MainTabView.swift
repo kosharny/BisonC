@@ -31,7 +31,7 @@ struct MainTabView: View {
                     Image("statistics")
                 }
             
-            Text("Settings")
+            SettingsView()
                 .tabItem {
                     Image("settings")
                 }
