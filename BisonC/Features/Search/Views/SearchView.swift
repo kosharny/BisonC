@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    let isFavoritesEmpty: Bool = true
     @State private var searchText = ""
     
     var body: some View {
@@ -55,116 +56,123 @@ struct SearchView: View {
                                     .stroke((Color.brownApp).opacity(0.3), lineWidth: 1)
                             )
                     )
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading){
-                            Text("Latest requests")
-                                .font(.customInriaSans(.bold, size: 16))
-                                .foregroundStyle(.brownApp)
-                                .padding(.top)
-                            LastSearchView(title: "Species")
-                            LastSearchView(title: "Timeline")
-                            LastSearchView(title: "Before 1800")
-                            
-                            Text("Categories")
-                                .font(.customInriaSans(.bold, size: 16))
-                                .foregroundStyle(.brownApp)
-                                .padding(.top)
-                            
-                            LazyVGrid(
-                                columns: [
-                                    GridItem(.flexible()),
-                                    GridItem(.flexible()),
-                                    GridItem(.flexible())
-                                ],
-                                spacing: 16
-                            ) {
-                                CategoryPillView(title: "Species", icon: Image("speciesCat"))
-                                CategoryPillView(title: "Timeline", icon: Image("timelineCat"))
-                                CategoryPillView(title: "Places", icon: Image("placesCat"))
-                                CategoryPillView(title: "Culture & Tribes", icon: Image("cultureCat"))
-                                CategoryPillView(title: "Conservation", icon: Image("conservationCat"))
-                                CategoryPillView(title: "Myths & Facts", icon: Image("mythsCat"))
-                            }
-                            
-                            Text("Period")
-                                .font(.customInriaSans(.bold, size: 16))
-                                .foregroundStyle(.brownApp)
-                                .padding(.top)
-                            
-                            HStack {
-                                PeriodSerachView(title: "Before 1800")
-                                PeriodSerachView(title: "1800 - 1900")
-                                PeriodSerachView(title: "1900 - 1950")
-                                PeriodSerachView(title: "1500 - now")
-                            }
-                            
-                            Text("Tags")
-                                .font(.customInriaSans(.bold, size: 16))
-                                .foregroundStyle(.brownApp)
-                                .padding(.top)
-                            
-                            LazyVGrid(
-                                columns: [
-                                    GridItem(.flexible()),
-                                    GridItem(.flexible()),
-                                    GridItem(.flexible())
-                                ],
-                                spacing: 16
-                            ) {
-                                TagsSerachView(title: "#WildLife")
-                                TagsSerachView(title: "#Symbol of Strength")
-                                TagsSerachView(title: "#Prairies")
-                                TagsSerachView(title: "#HistoryofBison")
-                                TagsSerachView(title: "#Myths")
-                                TagsSerachView(title: "#IndigenousPeoples")
-                                TagsSerachView(title: "#NatureProtection")
-                                TagsSerachView(title: "#Biodiversity")
-                                TagsSerachView(title: "#Hoofprint")
-                            }
-                            
-                            HStack {
-                                Button {
-                                    //
-                                } label: {
-                                    Text("Reset")
-                                        .font(.customInriaSans(.regular, size: 18))
-                                        .foregroundStyle(.brownAppCat)
-                                        .padding()
-                                        .frame(maxWidth: 100)
-                                        .background(
-                                            Capsule()
-                                                .fill(.beigeApp)
-                                                .overlay(
-                                                    Capsule()
-                                                        .stroke((Color.brownAppCat).opacity(0.3), lineWidth: 1)
-                                                )
-                                                .shadow(radius: 4, x: 0, y: 4)
-                                        )
+                    if isFavoritesEmpty {
+                        Spacer()
+                        EmptyView(isFavorites: true, title: "No matches. Try removing filters.", buttonTitle: "BACK")
+                            .padding(.bottom, getSafeAreaBottom() + 40)
+                        Spacer()
+                    } else {
+                        ScrollView(showsIndicators: false) {
+                            VStack(alignment: .leading){
+                                Text("Latest requests")
+                                    .font(.customInriaSans(.bold, size: 16))
+                                    .foregroundStyle(.brownApp)
+                                    .padding(.top)
+                                LastSearchView(title: "Species")
+                                LastSearchView(title: "Timeline")
+                                LastSearchView(title: "Before 1800")
+                                
+                                Text("Categories")
+                                    .font(.customInriaSans(.bold, size: 16))
+                                    .foregroundStyle(.brownApp)
+                                    .padding(.top)
+                                
+                                LazyVGrid(
+                                    columns: [
+                                        GridItem(.flexible()),
+                                        GridItem(.flexible()),
+                                        GridItem(.flexible())
+                                    ],
+                                    spacing: 16
+                                ) {
+                                    CategoryPillView(title: "Species", icon: Image("speciesCat"))
+                                    CategoryPillView(title: "Timeline", icon: Image("timelineCat"))
+                                    CategoryPillView(title: "Places", icon: Image("placesCat"))
+                                    CategoryPillView(title: "Culture & Tribes", icon: Image("cultureCat"))
+                                    CategoryPillView(title: "Conservation", icon: Image("conservationCat"))
+                                    CategoryPillView(title: "Myths & Facts", icon: Image("mythsCat"))
                                 }
                                 
-                                Button {
-                                    //
-                                } label: {
-                                    Text("Apply")
-                                        .font(.customInriaSans(.regular, size: 18))
-                                        .foregroundStyle(.beigeApp)
-                                        .padding()
-                                        .frame(maxWidth: .infinity)
-                                        .background(
-                                            Capsule()
-                                                .fill(.brownAppCat)
-                                                .overlay(
-                                                    Capsule()
-                                                        .stroke((Color.brownAppCat).opacity(0.3), lineWidth: 1)
-                                                )
-                                                .shadow(radius: 4, x: 0, y: 4)
-                                        )
+                                Text("Period")
+                                    .font(.customInriaSans(.bold, size: 16))
+                                    .foregroundStyle(.brownApp)
+                                    .padding(.top)
+                                
+                                HStack {
+                                    PeriodSerachView(title: "Before 1800")
+                                    PeriodSerachView(title: "1800 - 1900")
+                                    PeriodSerachView(title: "1900 - 1950")
+                                    PeriodSerachView(title: "1500 - now")
                                 }
+                                
+                                Text("Tags")
+                                    .font(.customInriaSans(.bold, size: 16))
+                                    .foregroundStyle(.brownApp)
+                                    .padding(.top)
+                                
+                                LazyVGrid(
+                                    columns: [
+                                        GridItem(.flexible()),
+                                        GridItem(.flexible()),
+                                        GridItem(.flexible())
+                                    ],
+                                    spacing: 16
+                                ) {
+                                    TagsSerachView(title: "#WildLife")
+                                    TagsSerachView(title: "#Symbol of Strength")
+                                    TagsSerachView(title: "#Prairies")
+                                    TagsSerachView(title: "#HistoryofBison")
+                                    TagsSerachView(title: "#Myths")
+                                    TagsSerachView(title: "#IndigenousPeoples")
+                                    TagsSerachView(title: "#NatureProtection")
+                                    TagsSerachView(title: "#Biodiversity")
+                                    TagsSerachView(title: "#Hoofprint")
+                                }
+                                
+                                HStack {
+                                    Button {
+                                        //
+                                    } label: {
+                                        Text("Reset")
+                                            .font(.customInriaSans(.regular, size: 18))
+                                            .foregroundStyle(.brownAppCat)
+                                            .padding()
+                                            .frame(maxWidth: 100)
+                                            .background(
+                                                Capsule()
+                                                    .fill(.beigeApp)
+                                                    .overlay(
+                                                        Capsule()
+                                                            .stroke((Color.brownAppCat).opacity(0.3), lineWidth: 1)
+                                                    )
+                                                    .shadow(radius: 4, x: 0, y: 4)
+                                            )
+                                    }
+                                    
+                                    Button {
+                                        //
+                                    } label: {
+                                        Text("Apply")
+                                            .font(.customInriaSans(.regular, size: 18))
+                                            .foregroundStyle(.beigeApp)
+                                            .padding()
+                                            .frame(maxWidth: .infinity)
+                                            .background(
+                                                Capsule()
+                                                    .fill(.brownAppCat)
+                                                    .overlay(
+                                                        Capsule()
+                                                            .stroke((Color.brownAppCat).opacity(0.3), lineWidth: 1)
+                                                    )
+                                                    .shadow(radius: 4, x: 0, y: 4)
+                                            )
+                                    }
+                                }
+                                .padding()
                             }
-                            .padding()
                         }
+                        .padding(.bottom, getSafeAreaBottom())
                     }
-                    .padding(.bottom, getSafeAreaBottom())
                 }
                 .padding(.horizontal)
             }

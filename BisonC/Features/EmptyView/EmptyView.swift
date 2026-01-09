@@ -10,6 +10,7 @@ import SwiftUI
 struct EmptyView: View {
     var isFavorites: Bool = false
     let title: String
+    var buttonTitle: String = "EXPLORE ARTICLES"
     
     var body: some View {
         VStack {
@@ -24,7 +25,7 @@ struct EmptyView: View {
                 Button {
                     //
                 } label: {
-                    Text("EXPLORE ARTICLES")
+                    Text(buttonTitle)
                         .font(.customPlayfairDisplaySC(.bold, size: 18))
                         .foregroundStyle(.brownApp)
                         .padding(8)
