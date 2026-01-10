@@ -11,8 +11,9 @@ struct SettingsView: View {
     @State private var isEnter: Bool = true
     @State private var isNoEnter: Bool = false
     
+    let onAboutTap: () -> Void
+    
     var body: some View {
-        NavigationStack {
             ZStack {
                 BackgroundView()
                 
@@ -97,7 +98,7 @@ struct SettingsView: View {
                                     .frame(height: 2)
                                     .background(.beigeApp)
                                 
-                                SettingsButton(title: "Restore Purchases")
+                                SettingsButton(title: "Restore Purchases", onTap: { })
                                 
                                 
                             }
@@ -112,28 +113,28 @@ struct SettingsView: View {
                             Text("About")
                                 .font(.customPlayfairDisplaySC(.bold, size: 18))
                                 .foregroundStyle(.brownApp)
-                            SettingsButton(title: "About the application")
+                            SettingsButton(title: "About the application", onTap: onAboutTap)
                                 .padding(.horizontal)
+                                .padding(.bottom, getSafeAreaBottom() + 50)
                         }
                     }
-                    .padding(.bottom, getSafeAreaBottom() + 50)
                 }
                 .padding(.horizontal)
             }
             .navigationBarHidden(true)
-        }
     }
 }
 
 #Preview {
-    SettingsView()
+    SettingsView(onAboutTap: { })
 }
 
 struct SettingsButton: View {
     let title: String
+    let onTap: () -> Void
     var body: some View {
         Button {
-            //
+            onTap()
         } label: {
             Text(title)
                 .font(.customInriaSans(.regular, size: 16))

@@ -18,6 +18,7 @@ struct OnboardingPage: Identifiable {
 
 struct OnboardingView: View {
     @State private var selection = 0
+    let onFinish: () -> Void
 
     private let pages: [OnboardingPage] = [
         .init(
@@ -51,7 +52,7 @@ struct OnboardingView: View {
                 ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
                     OnboardingPageView(page: page,
                                        index: index,
-                                       total: pages.count,
+                                       total: pages.count, onFinish: onFinish,
                                        selection: $selection)
                     .tag(index)
                 }
@@ -65,6 +66,7 @@ struct OnboardingPageView: View {
     let page: OnboardingPage
     let index: Int
     let total: Int
+    let onFinish: () -> Void
 
     @Binding var selection: Int
 
@@ -87,7 +89,7 @@ struct OnboardingPageView: View {
         HStack {
             if index > 0 {
                 Button {
-                    selection -= 1
+                    onFinish()
                 } label: {
                     Image("backButton")
                         .resizable()
@@ -142,7 +144,7 @@ struct OnboardingPageView: View {
             if index < total - 1 {
                 selection += 1
             } else {
-                // finish onboarding
+                onFinish()
             }
         } label: {
             Text(page.buttonTitle)
@@ -170,5 +172,5 @@ struct OnboardingPageView: View {
 }
 
 #Preview {
-    OnboardingView()
+    OnboardingView(onFinish: { })
 }

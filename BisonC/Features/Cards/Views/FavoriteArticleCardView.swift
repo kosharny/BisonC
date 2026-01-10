@@ -15,99 +15,104 @@ struct FavoriteArticleCardView: View {
     let category: String
     let readTime: String
     
-    let onRemove: () -> Void
+    let onRemove: (() -> Void)?
     
     var isResultsSerachView = false
     
+    let onTap: () -> Void
+    
+    
     var body: some View {
-        HStack(spacing: 0) {
-            
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 120)
-                .clipped()
-            
-            VStack(alignment: .leading, spacing: 10) {
+        Button(action: onTap) {
+            HStack(spacing: 0) {
                 
-                Text(title)
-                    .font(.customInriaSans(.bold, size: 20))
-                    .foregroundStyle(.darkTextApp)
+                Image(imageName)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 120)
+                    .clipped()
                 
-                Text(description)
-                    .font(.customInriaSans(.light, size: 14))
-                    .foregroundStyle(.darkTextApp)
-                    .lineLimit(2)
-                
-                HStack {
+                VStack(alignment: .leading, spacing: 10) {
                     
-                    CategoryTagView(title: category)
-                        .frame(minWidth: 120, minHeight: 50)
-                    
-                    Spacer()
-                    
-                    Text(readTime)
-                        .font(.customInriaSans(.light, size: 12))
+                    Text(title)
+                        .font(.customInriaSans(.bold, size: 20))
                         .foregroundStyle(.darkTextApp)
-                }
-                HStack {
-                    Spacer()
-                    if isResultsSerachView {
-                        Button(action: onRemove) {
-                            
-                            HStack {
-                                Text("View details")
-                                    .font(.customInriaSans(.bold, size: 14))
-                                    .foregroundStyle(.brownApp)
+                    
+                    Text(description)
+                        .font(.customInriaSans(.light, size: 14))
+                        .foregroundStyle(.darkTextApp)
+                        .lineLimit(2)
+                    
+                    HStack {
+                        
+                        CategoryTagView(title: category)
+                            .frame(minWidth: 120, minHeight: 50)
+                        
+                        Spacer()
+                        
+                        Text(readTime)
+                            .font(.customInriaSans(.light, size: 12))
+                            .foregroundStyle(.darkTextApp)
+                    }
+                    HStack {
+                        Spacer()
+                        if isResultsSerachView {
+                            Button(action: onTap) {
                                 
-                                Image(systemName: "arrow.right")
-                                    .foregroundStyle(.brownApp)
+                                HStack {
+                                    Text("View details")
+                                        .font(.customInriaSans(.bold, size: 14))
+                                        .foregroundStyle(.brownApp)
+                                    
+                                    Image(systemName: "arrow.right")
+                                        .foregroundStyle(.brownApp)
+                                }
+                                .padding()
+                                .background(
+                                    Capsule()
+                                        .fill(Color.brownApp.opacity(0.2))
+                                )
                             }
-                            .padding()
-                            .background(
-                                Capsule()
-                                    .fill(Color.brownApp.opacity(0.2))
-                            )
-                        }
-                    } else {
-                        Button(action: onRemove) {
-                            
-                            HStack {
-                                Text("Remove From Favorites")
-                                    .font(.customInriaSans(.bold, size: 14))
-                                    .foregroundStyle(.beigeApp)
+                        } else if let onRemove {
+                            Button(action: onRemove) {
                                 
-                                Image(systemName: "trash.circle.fill")
-                                    .foregroundStyle(.beigeApp)
+                                HStack {
+                                    Text("Remove From Favorites")
+                                        .font(.customInriaSans(.bold, size: 14))
+                                        .foregroundStyle(.beigeApp)
+                                    
+                                    Image(systemName: "trash.circle.fill")
+                                        .foregroundStyle(.beigeApp)
+                                }
+                                .padding()
+                                .background(
+                                    Capsule()
+                                        .fill(Color.redAppColor.opacity(0.5))
+                                )
                             }
-                            .padding()
-                            .background(
-                                Capsule()
-                                    .fill(Color.redAppColor.opacity(0.5))
-                            )
                         }
                     }
+                    
+                    
+                    
+                    Spacer(minLength: 0)
                 }
-                
-                
+                .padding(16)
                 
                 Spacer(minLength: 0)
             }
-            .padding(16)
-            
-            Spacer(minLength: 0)
+            .frame(maxWidth: .infinity, maxHeight: 200)
+            .background(
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .fill(Color.beigeAppCat)
+            )
+            .clipShape(
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 22)
+                    .stroke(Color.beigeApp.opacity(0.5))
+            )
         }
-        .frame(maxWidth: .infinity, maxHeight: 200)
-        .background(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.beigeAppCat)
-        )
-        .clipShape(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 22)
-                .stroke(Color.beigeApp.opacity(0.5))
-        )
     }
 }

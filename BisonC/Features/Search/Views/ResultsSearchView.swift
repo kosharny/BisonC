@@ -11,15 +11,19 @@ struct ResultsSearchView: View {
     @State private var selectedSort = "Most relevant"
     let sortOptions = ["Most relevant", "Newest", "Oldest", "A-Z"]
     
+    let query: String
+    let onArticleTap: (String) -> Void
+    let onBackTap: () -> Void
+
+    
     var body: some View {
-        NavigationStack {
             ZStack {
                 BackgroundView()
                 
                 VStack {
                     HStack {
                         Button {
-                            
+                            onBackTap()
                         } label: {
                             Image("backButton")
                                 .resizable()
@@ -77,10 +81,11 @@ struct ResultsSearchView: View {
                                 description: "Discover the secret of rituals and legends where the bison was the center...",
                                 category: "Culture & Tribes",
                                 readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                },
-                                isResultsSerachView: true
+                                onRemove: nil,
+                                isResultsSerachView: true,
+                                onTap: {
+                                    onArticleTap("article_id_1")
+                                }
                             )
                             FavoriteArticleCardView(
                                 imageName: "1",
@@ -88,10 +93,11 @@ struct ResultsSearchView: View {
                                 description: "Discover the secret of rituals and legends where the bison was the center...",
                                 category: "Culture & Tribes",
                                 readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                },
-                                isResultsSerachView: true
+                                onRemove: nil,
+                                isResultsSerachView: true,
+                                onTap: {
+                                    onArticleTap("article_id_1")
+                                }
                             )
                             FavoriteArticleCardView(
                                 imageName: "1",
@@ -99,10 +105,11 @@ struct ResultsSearchView: View {
                                 description: "Discover the secret of rituals and legends where the bison was the center...",
                                 category: "Culture & Tribes",
                                 readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                },
-                                isResultsSerachView: true
+                                onRemove: nil,
+                                isResultsSerachView: true,
+                                onTap: {
+                                    onArticleTap("article_id_1")
+                                }
                             )
                             FavoriteArticleCardView(
                                 imageName: "1",
@@ -110,10 +117,11 @@ struct ResultsSearchView: View {
                                 description: "Discover the secret of rituals and legends where the bison was the center...",
                                 category: "Culture & Tribes",
                                 readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                },
-                                isResultsSerachView: true
+                                onRemove: nil,
+                                isResultsSerachView: true,
+                                onTap: {
+                                    onArticleTap("article_id_1")
+                                }
                             )
                         }
                         .padding(.bottom, getSafeAreaBottom())
@@ -122,10 +130,9 @@ struct ResultsSearchView: View {
                 }
             }
             .navigationBarHidden(true)
-        }
     }
 }
 
 #Preview {
-    ResultsSearchView()
+    ResultsSearchView(query: "", onArticleTap: { _ in }, onBackTap: { })
 }

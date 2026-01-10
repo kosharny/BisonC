@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct SearchView: View {
-    let isFavoritesEmpty: Bool = true
-    @State private var searchText = ""
+    let isFavoritesEmpty: Bool = false
+    let onBackTap: () -> Void
+    let onSearch: (String) -> Void
+    @State private var query = ""
     
     var body: some View {
-        NavigationStack {
             ZStack {
                 BackgroundView()
                 
                 VStack {
                     HStack {
                         Button {
-                            
+                            onBackTap()
                         } label: {
                             Image("backButton")
                                 .resizable()
@@ -42,7 +43,7 @@ struct SearchView: View {
                             .font(.system(size: 20, weight: .medium))
                         
                         
-                        TextField("Search topics, tribes, years...", text: $searchText)
+                        TextField("Search topics, tribes, years...", text: $query)
                             .font(.customInriaSans(.light, size: 16))
                             .foregroundColor(.brownApp)
                     }
@@ -150,7 +151,7 @@ struct SearchView: View {
                                     }
                                     
                                     Button {
-                                        //
+                                        onSearch(query)
                                     } label: {
                                         Text("Apply")
                                             .font(.customInriaSans(.regular, size: 18))
@@ -177,7 +178,7 @@ struct SearchView: View {
                 .padding(.horizontal)
             }
             .navigationBarHidden(true)
-        }
+            .toolbar(.hidden, for: .tabBar)
     }
 }
 
@@ -262,5 +263,5 @@ struct LastSearchView: View {
 }
 
 #Preview {
-    SearchView()
+    SearchView(onBackTap: { }, onSearch: { _ in })
 }

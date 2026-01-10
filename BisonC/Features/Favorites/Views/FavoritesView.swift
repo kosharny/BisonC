@@ -9,81 +9,89 @@ import SwiftUI
 
 struct FavoritesView: View {
     let isFavoritesEmpty: Bool = false
+    let onArticleTap: (String) -> Void
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                BackgroundView()
-                
-                VStack {
-                    HStack {
-                        Image("favoritesLogo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 50)
-                        Spacer()
-                    }
-                    .padding(.top, getSafeAreaTop())
-                    .padding()
-                    if isFavoritesEmpty {
-                        Spacer()
-                        EmptyView(isFavorites: true, title: "No favorites yet")
-                            .padding(.bottom, getSafeAreaBottom() + 40)
-                        Spacer()
-                    } else {
-                        ScrollView(showsIndicators: false) {
-                            FavoriteArticleCardView(
-                                imageName: "1",
-                                title: "Bison in culture.",
-                                description: "Discover the secret of rituals and legends where the bison was the center...",
-                                category: "Culture & Tribes",
-                                readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                }
-                            )
-                            FavoriteArticleCardView(
-                                imageName: "1",
-                                title: "Bison in culture.",
-                                description: "Discover the secret of rituals and legends where the bison was the center...",
-                                category: "Culture & Tribes",
-                                readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                }
-                            )
-                            FavoriteArticleCardView(
-                                imageName: "1",
-                                title: "Bison in culture.",
-                                description: "Discover the secret of rituals and legends where the bison was the center...",
-                                category: "Culture & Tribes",
-                                readTime: "10 minutes to read",
-                                onRemove: {
-                                    print("Remove tapped")
-                                }
-                            )
-                            
-                            ClearAllButton {
-                                
+        ZStack {
+            BackgroundView()
+            
+            VStack {
+                HStack {
+                    Image("favoritesLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 50)
+                    Spacer()
+                }
+                .padding(.top, getSafeAreaTop())
+                .padding()
+                if isFavoritesEmpty {
+                    Spacer()
+                    EmptyView(isFavorites: true, title: "No favorites yet")
+                        .padding(.bottom, getSafeAreaBottom() + 40)
+                    Spacer()
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        FavoriteArticleCardView(
+                            imageName: "1",
+                            title: "Bison in culture.",
+                            description: "Discover the secret of rituals and legends where the bison was the center...",
+                            category: "Culture & Tribes",
+                            readTime: "10 minutes to read",
+                            onRemove: {
+                                print("Remove tapped")
+                            },
+                            onTap: {
+                                onArticleTap("article_id_1")
                             }
+                        )
+                        FavoriteArticleCardView(
+                            imageName: "1",
+                            title: "Bison in culture.",
+                            description: "Discover the secret of rituals and legends where the bison was the center...",
+                            category: "Culture & Tribes",
+                            readTime: "10 minutes to read",
+                            onRemove: {
+                                print("Remove tapped")
+                            },
+                            onTap: {
+                                onArticleTap("article_id_1")
+                            }
+                        )
+                        FavoriteArticleCardView(
+                            imageName: "1",
+                            title: "Bison in culture.",
+                            description: "Discover the secret of rituals and legends where the bison was the center...",
+                            category: "Culture & Tribes",
+                            readTime: "10 minutes to read",
+                            onRemove: {
+                                print("Remove tapped")
+                            },
+                            onTap: {
+                                onArticleTap("article_id_1")
+                            }
+                        )
+                        
+                        ClearAllButton {
+                            
                         }
-                        .padding(.horizontal)
                         .padding(.bottom, getSafeAreaBottom() + 50)
                     }
+                    .padding(.horizontal)
                 }
             }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
     }
 }
 
 #Preview {
-    FavoritesView()
+    FavoritesView(onArticleTap: { _ in })
 }
 
 struct ClearAllButton: View {
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
             HStack {
