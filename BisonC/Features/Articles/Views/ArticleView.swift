@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ArticleView: View {
-    @State var isFavorite: Bool
+    @State var isFavorite: Bool = false
+    let articleId: String
+    let onBackTap: () -> Void
     
     var body: some View {
         ZStack {
@@ -17,7 +19,7 @@ struct ArticleView: View {
             VStack {
                 HStack {
                     Button {
-                        
+                        onBackTap()
                     } label: {
                         Image("backButton")
                             .resizable()
@@ -97,7 +99,7 @@ struct ArticleView: View {
                         }
                         
                         ReadyButton {
-                            //
+                            onBackTap()
                         }
                     }
                     .padding(.horizontal)
@@ -105,6 +107,7 @@ struct ArticleView: View {
                 .padding(.bottom, getSafeAreaBottom())
             }
             .navigationBarHidden(true)
+            .toolbar(.hidden, for: .tabBar)
         }
     }
 }
@@ -182,5 +185,5 @@ struct DecorativeLine: View {
 }
 
 #Preview {
-    ArticleView(isFavorite: false)
+    ArticleView(articleId: "", onBackTap: { })
 }

@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    let onSearchTap: () -> Void
+    let onArticleTap: (String) -> Void
+    
     var body: some View {
-        NavigationStack {
             ZStack {
                 BackgroundView()
                 
@@ -21,7 +24,7 @@ struct HomeView: View {
                             .frame(maxHeight: 50)
                         Spacer()
                         Button {
-                            
+                            onSearchTap()
                         } label: {
                             Image("searchButton")
                                 .resizable()
@@ -33,46 +36,51 @@ struct HomeView: View {
                     .padding()
                     
                     ScrollView(showsIndicators: false) {
-                        
-                        ZStack(alignment: .bottomLeading) {
-                            Image("1")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 220)
-                                .clipped()
-                            
-                            LinearGradient(
-                                colors: [
-                                    Color.black.opacity(0.65),
-                                    Color.black.opacity(0.2),
-                                    Color.clear
-                                ],
-                                startPoint: .bottom,
-                                endPoint: .top
-                            )
-                            
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Bison: The Full Story")
-                                    .font(.customPlayfairDisplay(.bold, size: 20))
-                                    .foregroundStyle(.beigeApp)
+                        Button {
+                            onArticleTap("article_id_1")
+                        } label: {
+                            ZStack(alignment: .bottomLeading) {
+                                Image("1")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: 220)
+                                    .clipped()
                                 
-                                Text("Explore the comprehensive history and life of the American bison.")
-                                    .font(.customInriaSans(.light, size: 16))
-                                    .foregroundStyle(.beigeApp)
+                                LinearGradient(
+                                    colors: [
+                                        Color.black.opacity(0.65),
+                                        Color.black.opacity(0.2),
+                                        Color.clear
+                                    ],
+                                    startPoint: .bottom,
+                                    endPoint: .top
+                                )
                                 
-                                Button("Start reading") {
-                                    // action
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("Bison: The Full Story")
+                                        .font(.customPlayfairDisplay(.bold, size: 20))
+                                        .foregroundStyle(.beigeApp)
+                                    
+                                    Text("Explore the comprehensive history and life of the American bison.")
+                                        .font(.customInriaSans(.light, size: 16))
+                                        .foregroundStyle(.beigeApp)
+                                    
+                                    Button("Start reading") {
+                                        // action
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(.brownAppCat)
+                                    .controlSize(.regular)
                                 }
-                                .buttonStyle(.borderedProminent)
-                                .tint(.brownAppCat)
-                                .controlSize(.regular)
+                                .padding(16)
                             }
-                            .padding(16)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                            .padding()
                         }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        .padding()
+
+                       
                         
                         VStack(alignment: .leading) {
                             Text("Quick access")
@@ -139,28 +147,40 @@ struct HomeView: View {
                                         title: "Bison in the culture of indigenous peoples",
                                         readTime: "7 minutes to read",
                                         category: "Culture & Tribes",
-                                        isFavorite: false
+                                        isFavorite: false,
+                                        onTap: {
+                                            onArticleTap("article_id_1")
+                                        }
                                     )
                                     ArticleCardView(
                                         image: Image("1"),
                                         title: "Bison in the culture of indigenous peoples",
                                         readTime: "7 minutes to read",
                                         category: "Culture & Tribes",
-                                        isFavorite: false
+                                        isFavorite: false,
+                                        onTap: {
+                                            onArticleTap("article_id_1")
+                                        }
                                     )
                                     ArticleCardView(
                                         image: Image("1"),
                                         title: "Bison in the culture of indigenous peoples",
                                         readTime: "7 minutes to read",
                                         category: "Culture & Tribes",
-                                        isFavorite: false
+                                        isFavorite: false,
+                                        onTap: {
+                                            onArticleTap("article_id_1")
+                                        }
                                     )
                                     ArticleCardView(
                                         image: Image("1"),
                                         title: "Bison in the culture of indigenous peoples",
                                         readTime: "7 minutes to read",
                                         category: "Culture & Tribes",
-                                        isFavorite: false
+                                        isFavorite: false,
+                                        onTap: {
+                                            onArticleTap("article_id_1")
+                                        }
                                     )
                                 }
                             }
@@ -172,12 +192,12 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
-        }
+        
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(onSearchTap: {}, onArticleTap: {_ in })
 }
 
 
