@@ -106,21 +106,21 @@ struct OnboardingPageView: View {
             .padding()
             .background(
                 Capsule()
-                    .stroke(.beigeApp.opacity(0.6), lineWidth: 1)
+                    .stroke(.brownApp.opacity(0.6), lineWidth: 1)
             )
         }
-        .foregroundStyle(.beigeApp)
+        .foregroundStyle(.brownApp)
     }
 
     private var content: some View {
         VStack(spacing: 20) {
             Text(page.title)
                 .font(.customPlayfairDisplay(.bold, size: 24))
-                .foregroundStyle(.beigeApp)
+                .foregroundStyle(.brownApp)
 
             Text(page.subtitle)
                 .font(.customPlayfairDisplay(.balck, size: 20))
-                .foregroundStyle(.beigeApp)
+                .foregroundStyle(.brownApp)
 
             Image(page.imageName)
                 .resizable()
@@ -129,7 +129,7 @@ struct OnboardingPageView: View {
 
             Text(page.description)
                 .font(.customInriaSans(.regular, size: 18))
-                .foregroundStyle(.beigeApp)
+                .foregroundStyle(.brownApp)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
@@ -151,17 +151,17 @@ struct OnboardingPageView: View {
                 .padding()
                 .background(
                     Capsule()
-                        .stroke(.beigeApp.opacity(0.6), lineWidth: 1)
+                        .stroke(.brownApp.opacity(0.6), lineWidth: 1)
                 )
         }
-        .foregroundStyle(.beigeApp)
+        .foregroundStyle(.brownApp)
     }
 
     private var pageIndicator: some View {
         HStack(spacing: 8) {
             ForEach(0..<total, id: \.self) { i in
                 Circle()
-                    .fill(i == index ? Color.beigeApp : Color.beigeApp.opacity(0.4))
+                    .fill(i == index ? Color.brownApp : Color.brownApp.opacity(0.4))
                     .frame(width: 8, height: 8)
             }
         }
