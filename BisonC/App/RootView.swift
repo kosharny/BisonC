@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct RootView: View {
     
     @StateObject private var appState = AppState()
+    let conteiner: NSPersistentContainer
     
     var body: some View {
         ZStack {
@@ -25,14 +27,10 @@ struct RootView: View {
                 )
                 
             case .main:
-                MainTabView()
+                MainTabView(conteiner: conteiner)
             }
         }
         .animation(.easeInOut, value: appState.state)
     }
 }
 
-
-#Preview {
-    RootView()
-}

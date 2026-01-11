@@ -8,9 +8,18 @@
 import SwiftUI
 
 struct ArticleView: View {
+    
+    @StateObject private var vm: ArticleViewModel
+    
     @State var isFavorite: Bool = false
     let articleId: String
     let onBackTap: () -> Void
+    
+    init(articleId: String, repository: ArticlesRepository, onBackTap: @escaping () -> Void) {
+        self.articleId = articleId
+        self.onBackTap = onBackTap
+        _vm = StateObject(wrappedValue: ArticleViewModel(articleId: articleId, repository: repository))
+    }
     
     var body: some View {
         ZStack {
@@ -40,81 +49,88 @@ struct ArticleView: View {
                 .padding(.top, getSafeAreaTop())
                 .padding()
                 ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading) {
-                        ZStack(alignment: .topLeading) {
-                            Image("1")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 220)
-                                .clipped()
-                            
-                            LinearGradient(
-                                colors: [
-                                    Color.black.opacity(0.65),
-                                    Color.black.opacity(0.2),
-                                    Color.clear
-                                ],
-                                startPoint: .bottom,
-                                endPoint: .top
-                            )
-                            
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("Bison: The Full Story")
-                                    .font(.customPlayfairDisplay(.bold, size: 20))
-                                    .foregroundStyle(.beigeApp)
+                    if let article = vm.article {
+                        VStack(alignment: .leading) {
+                            ZStack(alignment: .topLeading) {
+                                Image(article.imageName)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: 220)
+                                    .clipped()
                                 
-                                Spacer()
+                                LinearGradient(
+                                    colors: [
+                                        Color.black.opacity(0.65),
+                                        Color.black.opacity(0.2),
+                                        Color.clear
+                                    ],
+                                    startPoint: .bottom,
+                                    endPoint: .top
+                                )
                                 
-                                HStack {
-                                    CategoryTagView(title: "Timeline")
-                                        .frame(minHeight: 50)
-                                    CategoryTagView(title: "1800-1900")
-                                        .frame(minHeight: 50)
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text(article.title)
+                                        .font(.customPlayfairDisplay(.bold, size: 20))
+                                        .foregroundStyle(.beigeApp)
+                                    
                                     Spacer()
                                     
-                                    Text("5 minutes to read")
-                                        .font(.customInriaSans(.light, size: 14))
-                                        .foregroundStyle(.beigeApp)
+                                    HStack {
+                                        CategoryTagView(title: article.category)
+                                            .frame(minHeight: 50)
+                                        if let period = article.yearPeriod, !period.isEmpty {
+                                            CategoryTagView(title: period)
+                                                .frame(minHeight: 50)
+                                        }
+                                        Spacer()
+                                        
+                                        Text(article.readTimeText)
+                                            .font(.customInriaSans(.light, size: 14))
+                                            .foregroundStyle(.beigeApp)
+                                    }
                                 }
+                                .padding(16)
+                                
+                                
                             }
-                            .padding(16)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                             
+                            ForEach(article.tags, id: \.self) { tag in
+                                    CategoryTagView(title: "#\(tag)")
+                                }
+                            VStack(alignment: .leading, spacing: 25) {
+                                ArticleSection(title: "INTRODUCTION", content: article.intro, activeIndex: 0)
+                                
+                                ArticleSection(title: "DETAILS", content: article.details, activeIndex: 1)
+                                
+                                ArticleSection(title: "PROBLEM", content: article.problem, activeIndex: 2)
+                                
+                                ArticleSection(title: "CONCLUSION", content: article.conclusion, activeIndex: 3)
+                            }
                             
+                            ReadyButton {
+                                onBackTap()
+                            }
                         }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        
-                        CategoryTagView(title: "#NatureProtection")
-                        CategoryTagView(title: "#HistoryofBison")
-                        CategoryTagView(title: "#Prairies")
-                        VStack(alignment: .leading, spacing: 25) {
-                            ArticleSection(title: "INTRODUCTION", content: "In the 19th century, the American prairies were home to millions of bison. For indigenous peoples, they were a source of food, clothing and spiritual strength...", activeIndex: 0)
-                            
-                            ArticleSection(title: "DETAILS", content: "In the 19th century, the American prairies were home to millions of bison. For indigenous peoples, they were a source of food, clothing and spiritual strength...", activeIndex: 1)
-                            
-                            ArticleSection(title: "PROBLEM", content: "The disappearance of bison was a blow to the ecosystem: the vegetation, the balance of animals and the cultural life of the tribes changed...", activeIndex: 2)
-                            
-                            ArticleSection(title: "CONCLUSION", content: "Today, the bison is a symbol of strength and national identity. His story reminds us: disappearance can be quick, and restoration requires ten years of effort.", activeIndex: 3)
-                        }
-                        
-                        ReadyButton {
-                            onBackTap()
-                        }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                 }
                 .padding(.bottom, getSafeAreaBottom())
             }
             .navigationBarHidden(true)
             .toolbar(.hidden, for: .tabBar)
+            .onAppear {
+                vm.load()
+            }
         }
     }
 }
 
 struct ReadyButton: View {
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
             HStack {
@@ -184,6 +200,4 @@ struct DecorativeLine: View {
     }
 }
 
-#Preview {
-    ArticleView(articleId: "", onBackTap: { })
-}
+

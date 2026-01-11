@@ -6,21 +6,18 @@
 //
 
 import SwiftUI
-
-//enum AppRoute: Hashable {
-//    case search
-//    case results(query: String)
-//    case article(id: String)
-//}
+import CoreData
 
 struct MainTabView: View {
     
     @StateObject private var router = AppRouter()
+    let conteiner: NSPersistentContainer
     
     var body: some View {
         TabView {
             NavigationStack(path: $router.homePath) {
                 HomeView(
+                    container: conteiner,
                     onSearchTap: {
                         router.homePath.append(AppRouter.Route.search)
                     },
@@ -102,7 +99,7 @@ struct MainTabView: View {
             
         case .article(let id):
             ArticleView(
-                articleId: id,
+                articleId: id, repository: ArticlesRepositoryCoreData(container: conteiner),
                 onBackTap: {
                     if router.homePath.count > 0 {
                         router.homePath.removeLast()
@@ -122,6 +119,3 @@ struct MainTabView: View {
 }
 
 
-#Preview {
-    MainTabView()
-}

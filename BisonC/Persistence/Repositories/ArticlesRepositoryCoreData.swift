@@ -43,4 +43,30 @@ final class ArticlesRepositoryCoreData: ArticlesRepository {
         
         return try context.fetch(request).first?.toDomain()
     }
+    
+    func fetchFeatured() async throws -> Article? {
+        let context = container.viewContext
+
+        let request: NSFetchRequest<ArticleEntity> = ArticleEntity.fetchRequest()
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "yearPeriod", ascending: false)
+        ]
+        request.fetchLimit = 1
+
+        return try context.fetch(request).first?.toDomain()
+    }
+
+    func fetchRecent(limit: Int) async throws -> [Article] {
+        let context = container.viewContext
+
+        let request: NSFetchRequest<ArticleEntity> = ArticleEntity.fetchRequest()
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "lastOpenedDate", ascending: false)
+        ]
+        request.fetchLimit = limit
+
+        let result = try context.fetch(request)
+        return result.map { $0.toDomain() }
+    }
+
 }

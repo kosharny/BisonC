@@ -58,7 +58,7 @@ struct ArticleCardView: View {
                     .fill(.beigeApp)
                     .shadow(radius: 4, x: 0, y: 4)
             )
-            .frame(width: 260)
+            .frame(width: 260, height: 260)
         }
 
         
