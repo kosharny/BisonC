@@ -21,4 +21,13 @@ struct Article: Identifiable, Codable {
     
     var isFavorite: Bool = false
     var lastOpenedDate: Date? = nil
+    
+    var yearStart: Int? {
+            guard let yearPeriod = yearPeriod else { return nil }
+            let components = yearPeriod.components(separatedBy: "–")
+            if let first = components.first, let y = Int(first) {
+                return y
+            }
+            return nil
+        }
 }

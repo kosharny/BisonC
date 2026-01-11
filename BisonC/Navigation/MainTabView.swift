@@ -11,7 +11,17 @@ import CoreData
 struct MainTabView: View {
     
     @StateObject private var router = AppRouter()
+    @StateObject private var searchVM: SearchViewModel
+    
     let conteiner: NSPersistentContainer
+    
+    init(conteiner: NSPersistentContainer) {
+        self.conteiner = conteiner
+        _searchVM = StateObject(wrappedValue: SearchViewModel(
+            repository: ArticlesRepositoryCoreData(container: conteiner)
+        ))
+    }
+
     
     var body: some View {
         TabView {
@@ -23,6 +33,15 @@ struct MainTabView: View {
                     },
                     onArticleTap: { articleId in
                         router.homePath.append(AppRouter.Route.article(id: articleId))
+                    },
+                    onCategoryTap: { categoryIDs in
+                        Task {
+                            let allArticles = try? await ArticlesRepositoryCoreData(container: conteiner).fetchAll()
+                            let filtered = allArticles?.filter { categoryIDs.contains($0.category) } ?? []
+                            let ids = filtered.map { $0.id }
+                            
+                            router.homePath.append(.results(articleIds: ids))
+                        }
                     }
                 )
                 .navigationDestination(for: AppRouter.Route.self) { route in
@@ -65,12 +84,15 @@ struct MainTabView: View {
                     destination(for: route)
                 }
             }
-                .tabItem {
-                    Image("settings")
-                }
+            .tabItem {
+                Image("settings")
+            }
         }
         .toolbarBackground(.thickMaterial, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
+        .task {
+            await searchVM.loadArticles()
+        }
     }
     
     @ViewBuilder
@@ -78,19 +100,22 @@ struct MainTabView: View {
         switch route {
         case .search:
             SearchView(
-                onBackTap: {
-                    router.homePath.removeLast()
-                },
-                onSearch: { query in
-                    router.homePath.append(AppRouter.Route.results(query: query))
-                }
+                vm: searchVM,
+                    onBackTap: { router.homePath.removeLast() },
+                    onSearch: { articles in
+                        print("🚀 Filtered articles count:", articles.count)
+                        let ids = articles.map(\.id)
+                        print("Filtered IDs:", ids)
+                        router.homePath.append(.results(articleIds: ids))
+                    }
             )
             
-        case .results(let query):
+        case .results(let articleIDs):
             ResultsSearchView(
-                query: query,
-                onArticleTap: { articleId in
-                    router.openArticle(articleId)
+                articleIDs: articleIDs,
+                repository: ArticlesRepositoryCoreData(container: conteiner),
+                onArticleTap: { id in
+                    router.openArticle(id)
                 },
                 onBackTap: {
                     router.homePath.removeLast()

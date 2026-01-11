@@ -46,11 +46,11 @@ struct FavoriteArticleCardView: View {
                     HStack {
                         
                         CategoryTagView(title: category)
-                            .frame(minWidth: 120, minHeight: 50)
+                            .frame(minWidth: 80, minHeight: 40)
                         
                         Spacer()
                         
-                        Text(readTime)
+                        Text("\(readTime) minutes to read")
                             .font(.customInriaSans(.light, size: 12))
                             .foregroundStyle(.darkTextApp)
                     }
