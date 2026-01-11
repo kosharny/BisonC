@@ -21,7 +21,7 @@ struct CategoryPillView: View {
                 .frame(width: 30, height: 30)
             
             Text(title)
-                .font(.customInriaSans(.regular, size: 14))
+                .font(.customInriaSans(.regular, size: 12))
                 .foregroundStyle(.brownApp)
                 .lineLimit(2)
             

@@ -21,4 +21,10 @@ extension View {
         let window = windowScene?.windows.first
         return window?.safeAreaInsets.bottom ?? 0
     }
+    
+    func hideKeyboardOnTap() -> some View {
+            self.onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+        }
 }
