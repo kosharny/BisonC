@@ -26,6 +26,26 @@ final class ArticleViewModel: ObservableObject {
             do {
                 if let article = try await repository.fetchById(articleId) {
                     self.article = article.toUIModel()
+                    
+                    let historyEntry = HistoryEntry(
+                        id: UUID().uuidString,
+                        articleId: article.id,
+                        openedAt: Date(),
+                        categoryId: article.category,
+                        progress: 0.0
+                    )
+                    
+                    do {
+                        try await repository.saveHistory(entry: historyEntry)
+                        await MainActor.run {
+                            NotificationCenter.default.post(
+                                name: NSNotification.Name("HistoryUpdated"),
+                                object: nil
+                            )
+                        }
+                    } catch {
+                        print("❌ Failed to save history:", error)
+                    }
                 }
             } catch {
                 self.errorMessage = error.localizedDescription

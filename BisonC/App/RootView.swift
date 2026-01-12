@@ -27,7 +27,7 @@ struct RootView: View {
                 )
                 
             case .main:
-                MainTabView(conteiner: conteiner)
+                MainTabView(container: conteiner)
             }
         }
         .animation(.easeInOut, value: appState.state)

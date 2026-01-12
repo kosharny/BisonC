@@ -28,9 +28,9 @@ struct StatsView: View {
                 .padding()
                 
                 HStack {
-                    FilterButton(isFiltered: $isFiltered, title: "Week")
-                    FilterButton(isFiltered: $isFiltered, title: "Month")
-                    FilterButton(isFiltered: $isFiltered, title: "All")
+//                    FilterButton(isFiltered: $isFiltered, title: "Week")
+//                    FilterButton(isFiltered: $isFiltered, title: "Month")
+//                    FilterButton(isFiltered: $isFiltered, title: "All")
                 }
                 
                 if isStatsEmpty {

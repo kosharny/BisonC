@@ -8,26 +8,31 @@
 import SwiftUI
 
 struct CardHistoryView: View {
+    let title: String
+    let readingDate: String
+    let categorieName: String
+    let progress: Double
+    let onDelete: () -> Void
+    
     var body: some View {
         VStack {
             HStack {
-                Text("Shades over the prairies.")
+                Text(title)
                     .font(.customInriaSans(.bold, size: 20))
                     .foregroundStyle(.darkTextApp)
-                
-                Text("Today at 10:30 AM")
+                Text(readingDate)
                     .font(.customInriaSans(.light, size: 14))
                     .foregroundStyle(.darkTextApp)
             }
             
             HStack {
-                CategoryTagView(title: "Timeline")
+                CategoryTagView(title: categorieName)
                 
                 VStack(alignment: .trailing) {
-                    Text("80%")
+                    Text("\(progress)%")
                         .font(.customInriaSans(.light, size: 14))
                         .foregroundStyle(.darkTextApp)
-                    ProgressView(value: 0.8)
+                    ProgressView(value: progress)
                         .progressViewStyle(.linear)
                         .tint(.brownApp)
                         .background(.brownApp.opacity(0.2))
@@ -37,7 +42,7 @@ struct CardHistoryView: View {
             .padding()
             
             Button {
-                //
+                onDelete()
             } label: {
                 ZStack {
                     HStack(spacing: 8) {

@@ -6,12 +6,20 @@
         <attribute name="coverImage" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastOpenedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="readTime" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="summary" attributeType="String"/>
         <attribute name="tags" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="yearPeriod" optional="YES" attributeType="String"/>
         <relationship name="sources" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SourceEntity" inverseName="article" inverseEntity="SourceEntity"/>
+    </entity>
+    <entity name="HistoryEntity" representedClassName="HistoryEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="articleId" attributeType="String"/>
+        <attribute name="categoryId" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="openedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="progress" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <entity name="SourceEntity" representedClassName="SourceEntity" syncable="YES" codeGenerationType="class">
         <attribute name="note" optional="YES" attributeType="String"/>

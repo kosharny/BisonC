@@ -10,16 +10,23 @@ import CoreData
 
 struct MainTabView: View {
     
+    
     @StateObject private var router = AppRouter()
     @StateObject private var searchVM: SearchViewModel
+    @StateObject private var historyVM: HistoryViewModel
     
-    let conteiner: NSPersistentContainer
+    let container: NSPersistentContainer
     
-    init(conteiner: NSPersistentContainer) {
-        self.conteiner = conteiner
+    init(container: NSPersistentContainer) {
+        self.container = container
         _searchVM = StateObject(wrappedValue: SearchViewModel(
-            repository: ArticlesRepositoryCoreData(container: conteiner)
+            repository: ArticlesRepositoryCoreData(container: container)
         ))
+        _historyVM = StateObject(
+                    wrappedValue: HistoryViewModel(
+                        repository: ArticlesRepositoryCoreData(container: container)
+                    )
+                )
     }
     
     
@@ -27,7 +34,7 @@ struct MainTabView: View {
         TabView {
             NavigationStack(path: $router.homePath) {
                 HomeView(
-                    container: conteiner,
+                    container: container,
                     onSearchTap: {
                         router.homePath.append(AppRouter.Route.search)
                     },
@@ -36,7 +43,7 @@ struct MainTabView: View {
                     },
                     onCategoryTap: { categoryIDs in
                         Task {
-                            let allArticles = try? await ArticlesRepositoryCoreData(container: conteiner).fetchAll()
+                            let allArticles = try? await ArticlesRepositoryCoreData(container: container).fetchAll()
                             let filtered = allArticles?.filter { categoryIDs.contains($0.category) } ?? []
                             let ids = filtered.map { $0.id }
                             
@@ -53,7 +60,7 @@ struct MainTabView: View {
             }
             NavigationStack(path: $router.favoritesPath) {
                 FavoritesView(
-                    container: conteiner,
+                    container: container,
                     onArticleTap: { articleId in
                         router.favoritesPath.append(AppRouter.Route.article(id: articleId))
                     }
@@ -66,7 +73,7 @@ struct MainTabView: View {
                 Image("favorites")
             }
             
-            HistoryView()
+            HistoryView(vm: historyVM)
                 .tabItem {
                     Image("history")
                 }
@@ -93,6 +100,7 @@ struct MainTabView: View {
         .toolbarBackground(.visible, for: .tabBar)
         .task {
             await searchVM.loadArticles()
+            await historyVM.loadHistory()
         }
     }
     
@@ -114,7 +122,7 @@ struct MainTabView: View {
         case .results(let articleIDs):
             ResultsSearchView(
                 articleIDs: articleIDs,
-                repository: ArticlesRepositoryCoreData(container: conteiner),
+                repository: ArticlesRepositoryCoreData(container: container),
                 onArticleTap: { id in
                     router.openArticle(id)
                 },
@@ -125,7 +133,7 @@ struct MainTabView: View {
             
         case .article(let id):
             ArticleView(
-                articleId: id, repository: ArticlesRepositoryCoreData(container: conteiner),
+                articleId: id, repository: ArticlesRepositoryCoreData(container: container),
                 onBackTap: {
                     if router.homePath.count > 0 {
                         router.homePath.removeLast()

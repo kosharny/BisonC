@@ -35,7 +35,7 @@ final class SearchViewModel: ObservableObject {
             let articles = try await repository.fetchAll()
             self.allArticles = articles
             setupFilters()
-            loadHistory()
+            loadHistorySearch()
         } catch {
             print("❌ Failed to load articles:", error)
         }
@@ -67,7 +67,7 @@ final class SearchViewModel: ObservableObject {
     }
 
     
-    private func loadHistory() {
+    private func loadHistorySearch() {
         history = UserDefaults.standard.stringArray(forKey: historyKey) ?? []
     }
     
