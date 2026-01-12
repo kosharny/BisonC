@@ -6,10 +6,22 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct FavoritesView: View {
-    let isFavoritesEmpty: Bool = false
+    
+    @StateObject private var vm: FavoritesViewModel
+    
     let onArticleTap: (String) -> Void
+    
+    init(container: NSPersistentContainer, onArticleTap: @escaping (String) -> Void) {
+        _vm = StateObject(
+            wrappedValue: FavoritesViewModel(
+                repository: ArticlesRepositoryCoreData(container: container)
+            )
+        )
+        self.onArticleTap = onArticleTap
+    }
     
     var body: some View {
         ZStack {
@@ -25,68 +37,51 @@ struct FavoritesView: View {
                 }
                 .padding(.top, getSafeAreaTop())
                 .padding()
-                if isFavoritesEmpty {
+                if vm.isEmpty {
                     Spacer()
                     EmptyView(isFavorites: true, title: "No favorites yet")
                         .padding(.bottom, getSafeAreaBottom() + 40)
                     Spacer()
                 } else {
-                    ScrollView(showsIndicators: false) {
-                        FavoriteArticleCardView(
-                            imageName: "1",
-                            title: "Bison in culture.",
-                            description: "Discover the secret of rituals and legends where the bison was the center...",
-                            category: "Culture & Tribes",
-                            readTime: "10 minutes to read",
-                            onRemove: {
-                                print("Remove tapped")
-                            },
-                            onTap: {
-                                onArticleTap("article_id_1")
+                    List {
+                        ForEach(vm.articles) { article in
+                            FavoriteArticleCardView(
+                                imageName: article.imageName,
+                                title: article.title,
+                                description: article.content,
+                                category: article.category,
+                                readTime: article.readTimeText,
+                                onRemove: nil,
+                                isResultsSerachView: true,
+                                onTap: {
+                                    onArticleTap(article.id)
+                                }
+                            )
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                        }
+                        .onDelete { indexSet in
+                                for index in indexSet {
+                                    let article = vm.articles[index]
+                                    vm.removeFromFavorites(article.id)
+                                }
                             }
-                        )
-                        FavoriteArticleCardView(
-                            imageName: "1",
-                            title: "Bison in culture.",
-                            description: "Discover the secret of rituals and legends where the bison was the center...",
-                            category: "Culture & Tribes",
-                            readTime: "10 minutes to read",
-                            onRemove: {
-                                print("Remove tapped")
-                            },
-                            onTap: {
-                                onArticleTap("article_id_1")
-                            }
-                        )
-                        FavoriteArticleCardView(
-                            imageName: "1",
-                            title: "Bison in culture.",
-                            description: "Discover the secret of rituals and legends where the bison was the center...",
-                            category: "Culture & Tribes",
-                            readTime: "10 minutes to read",
-                            onRemove: {
-                                print("Remove tapped")
-                            },
-                            onTap: {
-                                onArticleTap("article_id_1")
-                            }
-                        )
                         
                         ClearAllButton {
-                            
+                            vm.clearAllFavorites()
                         }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                         .padding(.bottom, getSafeAreaBottom() + 50)
                     }
+                    .scrollIndicators(.hidden)
+                    .listStyle(.plain)
                     .padding(.horizontal)
                 }
             }
         }
         .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    FavoritesView(onArticleTap: { _ in })
 }
 
 struct ClearAllButton: View {

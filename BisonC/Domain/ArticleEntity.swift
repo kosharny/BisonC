@@ -24,7 +24,9 @@ extension ArticleEntity {
             tags: tags  as? [String] ?? [],
             readTime: Int(readTime),
             yearPeriod: yearPeriod,
-            sources: (sources as? Set<SourceEntity>)?.map { $0.toDomain() } ?? []
+            sources: (sources as? Set<SourceEntity>)?.map { $0.toDomain() } ?? [],
+            isFavorite: isFavorite
+//            lastOpenedDate: lastOpenedDate
         )
     }
 }

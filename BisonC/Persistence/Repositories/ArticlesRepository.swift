@@ -13,4 +13,7 @@ protocol ArticlesRepository {
     func fetchById(_ id: String) async throws -> Article?
     func fetchFeatured() async throws -> Article?
     func fetchRecent(limit: Int) async throws -> [Article]
+    
+    func toggleFavorite(id: String) async throws
+    func fetchFavorites() async throws -> [Article]
 }

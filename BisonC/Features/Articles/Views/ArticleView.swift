@@ -11,7 +11,6 @@ struct ArticleView: View {
     
     @StateObject private var vm: ArticleViewModel
     
-    @State var isFavorite: Bool = false
     let articleId: String
     let onBackTap: () -> Void
     
@@ -37,9 +36,9 @@ struct ArticleView: View {
                     }
                     Spacer()
                     Button {
-                        isFavorite.toggle()
+                        vm.toggleFavorite()
                     } label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        Image(systemName: (vm.article?.isFavorite ?? false) ? "heart.fill" : "heart")
                             .resizable()
                             .scaledToFit()
                             .frame(maxHeight: 30)

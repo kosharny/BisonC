@@ -21,7 +21,7 @@ struct ArticleUIModel: Identifiable {
     let category: String
     let readTimeText: String
     let yearPeriod: String?
-    let isFavorite: Bool
+    var isFavorite: Bool
 }
 
 extension Article {

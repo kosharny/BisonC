@@ -21,7 +21,7 @@ struct MainTabView: View {
             repository: ArticlesRepositoryCoreData(container: conteiner)
         ))
     }
-
+    
     
     var body: some View {
         TabView {
@@ -53,6 +53,7 @@ struct MainTabView: View {
             }
             NavigationStack(path: $router.favoritesPath) {
                 FavoritesView(
+                    container: conteiner,
                     onArticleTap: { articleId in
                         router.favoritesPath.append(AppRouter.Route.article(id: articleId))
                     }
@@ -101,13 +102,13 @@ struct MainTabView: View {
         case .search:
             SearchView(
                 vm: searchVM,
-                    onBackTap: { router.homePath.removeLast() },
-                    onSearch: { articles in
-                        print("🚀 Filtered articles count:", articles.count)
-                        let ids = articles.map(\.id)
-                        print("Filtered IDs:", ids)
-                        router.homePath.append(.results(articleIds: ids))
-                    }
+                onBackTap: { router.homePath.removeLast() },
+                onSearch: { articles in
+                    print("🚀 Filtered articles count:", articles.count)
+                    let ids = articles.map(\.id)
+                    print("Filtered IDs:", ids)
+                    router.homePath.append(.results(articleIds: ids))
+                }
             )
             
         case .results(let articleIDs):
