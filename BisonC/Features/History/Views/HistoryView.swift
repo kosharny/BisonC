@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct HistoryView: View {
+
+    @ObservedObject var vm: HistoryViewModel
+//    @State private var isFiltered: Bool = false
     
-    @State private var isFiltered: Bool = false
-    let isHistoryEmpty: Bool = false
-    
+
     var body: some View {
         ZStack {
             BackgroundView()
-            
+
             VStack {
                 HStack {
                     Image("historyLogo")
@@ -26,27 +28,42 @@ struct HistoryView: View {
                 }
                 .padding(.top, getSafeAreaTop())
                 .padding()
-                
+
                 HStack {
-                    FilterButton(isFiltered: $isFiltered, title: "Today")
-                    FilterButton(isFiltered: $isFiltered, title: "7 days")
-                    FilterButton(isFiltered: $isFiltered, title: "30 days")
-                    FilterButton(isFiltered: $isFiltered, title: "All")
+                    ForEach(HistoryPeriod.allCases, id: \.self) { period in
+                        FilterButton(
+                            title: period.rawValue,
+                            isSelected: vm.selectedPeriod == period
+                        ) {
+                            vm.selectedPeriod = period
+                        }
+                    }
                 }
+                .padding(.horizontal)
                 
-                if isHistoryEmpty {
+
+                if vm.filteredItems.isEmpty {
                     Spacer()
                     EmptyView(title: "Your reading history will appear here.")
                         .padding(.bottom, getSafeAreaBottom() + 40)
                     Spacer()
                 } else {
                     ScrollView(showsIndicators: false) {
-                        CardHistoryView()
-                        CardHistoryView()
-                        CardHistoryView()
-                        
+                        ForEach(vm.filteredItems) { item in
+                            CardHistoryView(
+                                title: item.article.title,
+                                readingDate: item.entry.openedAt.formattedForHistory(),
+                                categorieName: item.article.category,
+                                progress: item.entry.progress,
+                                onDelete: {
+                                    vm.removeHistoryEntry(item.id)
+                                }
+                            )
+                            .id(item.id)
+                        }
+
                         Button {
-                            //
+                            // Экспорт истории или другая логика
                         } label: {
                             Image("exportButton")
                                 .resizable()
@@ -61,8 +78,4 @@ struct HistoryView: View {
         }
         .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    HistoryView()
 }

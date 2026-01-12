@@ -25,8 +25,8 @@ extension ArticleEntity {
             readTime: Int(readTime),
             yearPeriod: yearPeriod,
             sources: (sources as? Set<SourceEntity>)?.map { $0.toDomain() } ?? [],
-            isFavorite: isFavorite
-//            lastOpenedDate: lastOpenedDate
+            isFavorite: isFavorite,
+            lastOpenedDate: lastOpenedDate
         )
     }
 }
@@ -39,6 +39,19 @@ extension SourceEntity {
             year: year == 0 ? nil : Int(year),
             note: note,
             urlText: urlText
+        )
+    }
+}
+
+extension HistoryEntity {
+    
+    func toDomain() -> HistoryEntry {
+        HistoryEntry(
+            id: id ?? UUID().uuidString,
+            articleId: articleId ?? "",
+            openedAt: openedAt ?? Date(),
+            categoryId: categoryId ?? "",
+            progress: progress
         )
     }
 }

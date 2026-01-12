@@ -16,4 +16,9 @@ protocol ArticlesRepository {
     
     func toggleFavorite(id: String) async throws
     func fetchFavorites() async throws -> [Article]
+    
+    func saveHistory(entry: HistoryEntry) async throws
+    func fetchHistory() async throws -> [HistoryEntry]
+    func deleteHistory(id: String) async throws
+    func clearAllHistory() async throws
 }
