@@ -32,5 +32,25 @@ final class ArticleViewModel: ObservableObject {
             }
         }
     }
+    
+    @MainActor
+    func toggleFavorite() {
+        guard let article = article else { return }
+        
+        Task {
+            try await repository.toggleFavorite(id: article.id)
+            
+            if let updated = try await repository.fetchById(article.id) {
+                await MainActor.run {
+                    self.article = updated.toUIModel()
+                    NotificationCenter.default.post(
+                        name: .favoriteChanged,
+                        object: nil,
+                        userInfo: ["id": updated.id, "isFavorite": updated.isFavorite]
+                    )
+                }
+            }
+        }
+    }
 }
 

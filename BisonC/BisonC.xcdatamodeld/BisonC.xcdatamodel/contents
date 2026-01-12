@@ -5,6 +5,7 @@
         <attribute name="content" attributeType="String"/>
         <attribute name="coverImage" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="readTime" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="summary" attributeType="String"/>
         <attribute name="tags" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>

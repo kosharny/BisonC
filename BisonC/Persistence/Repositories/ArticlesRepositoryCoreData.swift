@@ -68,5 +68,26 @@ final class ArticlesRepositoryCoreData: ArticlesRepository {
         let result = try context.fetch(request)
         return result.map { $0.toDomain() }
     }
+    
+    func fetchFavorites() async throws -> [Article] {
+           let request: NSFetchRequest<ArticleEntity> = ArticleEntity.fetchRequest()
+           request.predicate = NSPredicate(format: "isFavorite == YES")
+           return try container.viewContext.fetch(request).map { $0.toDomain() }
+       }
 
+    func toggleFavorite(id: String) async throws {
+        let context = container.viewContext
+
+        let request: NSFetchRequest<ArticleEntity> = ArticleEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+        request.fetchLimit = 1
+
+        guard let entity = try context.fetch(request).first else { return }
+
+        entity.isFavorite.toggle()
+        try context.save()
+
+
+        try context.save()
+    }
 }

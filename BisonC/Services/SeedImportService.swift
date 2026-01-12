@@ -26,39 +26,71 @@ final class SeedImportService {
     }
     
     private func importSeed() async throws {
-        let context = container.viewContext
-        
+        let context = container.newBackgroundContext()
+
         let articles = try loadSeedArticles()
-        
         try await context.perform {
             for dto in articles {
-                let entity = ArticleEntity(context: context)
+
+                let request: NSFetchRequest<ArticleEntity> = ArticleEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "id == %@", dto.id)
+                request.fetchLimit = 1
+
+                let entity = try context.fetch(request).first
+                    ?? ArticleEntity(context: context)
+
                 entity.id = dto.id
                 entity.title = dto.title
                 entity.summary = dto.summary
                 entity.content = dto.content
                 entity.category = dto.category
                 entity.coverImage = dto.coverImage
-                entity.tags = NSArray(array: dto.tags)
+                entity.tags = dto.tags as NSArray
                 entity.readTime = Int32(dto.readTime)
                 entity.yearPeriod = dto.yearPeriod
-                
-                if let sources = dto.sources {
-                    for s in sources {
-                        let src = SourceEntity(context: context)
-                        src.title = s.title
-                        src.publisher = s.publisher
-                        src.year = s.year.map { Int32($0) } ?? 0
-                        src.note = s.note
-                        src.urlText = s.urlText
-                        src.article = entity
-                    }
-                }
             }
-            
+
             try context.save()
         }
     }
+
+    
+//    private func importSeed() async throws {
+//        let context = container.newBackgroundContext()
+//        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//
+//        let articles = try loadSeedArticles()
+//
+//        try await context.perform {
+//            for dto in articles {
+//                let entity = ArticleEntity(context: context)
+//                entity.id = dto.id
+//                entity.title = dto.title
+//                entity.summary = dto.summary
+//                entity.content = dto.content
+//                entity.category = dto.category
+//                entity.coverImage = dto.coverImage
+//                entity.tags = NSArray(array: dto.tags)
+//                entity.readTime = Int32(dto.readTime)
+//                entity.yearPeriod = dto.yearPeriod
+//
+//                if let sources = dto.sources {
+//                    for s in sources {
+//                        let src = SourceEntity(context: context)
+//                        src.title = s.title
+//                        src.publisher = s.publisher
+//                        src.year = s.year.map(Int32.init) ?? 0
+//                        src.note = s.note
+//                        src.urlText = s.urlText
+//                        src.article = entity
+//                    }
+//                }
+//            }
+//
+//            try context.save()
+//        }
+//    }
+
     
     private func loadSeedArticles() throws -> [ArticleSeedDTO] {
         guard let url = Bundle.main.url(forResource: "articles_seed", withExtension: "json")
