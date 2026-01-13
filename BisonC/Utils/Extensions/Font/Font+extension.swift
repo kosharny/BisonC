@@ -8,8 +8,13 @@
 import SwiftUI
 
 extension Font {
+    
+    private static func scaledSize(_ size: CGFloat) -> CGFloat {
+        return size * SettingsViewModel.globalSizeMultiplier
+    }
+    
     static func customPlayfairDisplay(_ weight: PlayfairDisplayWeight, size: CGFloat) -> Font {
-        return Font.custom("PlayfairDisplay-\(weight.rawValue)", size: size)
+        return Font.custom("PlayfairDisplay-\(weight.rawValue)", size: scaledSize(size))
     }
     
     enum PlayfairDisplayWeight: String {
@@ -19,7 +24,7 @@ extension Font {
     }
     
     static func customPlayfairDisplaySC(_ weight: PlayfairDisplaySCWeight, size: CGFloat) -> Font {
-        return Font.custom("PlayfairDisplaySC-\(weight.rawValue)", size: size)
+        return Font.custom("PlayfairDisplaySC-\(weight.rawValue)", size: scaledSize(size))
     }
     
     enum PlayfairDisplaySCWeight: String {
@@ -27,7 +32,7 @@ extension Font {
     }
     
     static func customInriaSans(_ weight: InriaSansWeight, size: CGFloat) -> Font {
-        return Font.custom("InriaSans-\(weight.rawValue)", size: size)
+        return Font.custom("InriaSans-\(weight.rawValue)", size: scaledSize(size))
     }
     
     enum InriaSansWeight: String {

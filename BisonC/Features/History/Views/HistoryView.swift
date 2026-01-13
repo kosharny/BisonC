@@ -61,7 +61,7 @@ struct HistoryView: View {
                         }
 
                         Button {
-                            // Экспорт истории или другая логика
+                            vm.exportHistory()
                         } label: {
                             Image("exportButton")
                                 .resizable()
