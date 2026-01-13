@@ -14,6 +14,12 @@ enum HistoryPeriod: String, CaseIterable {
     case all = "All"
 }
 
+enum StatsPeriod: String, CaseIterable {
+    case week = "Week"
+    case month = "Month"
+    case all = "All"
+}
+
 struct FilterButton: View {
     let title: String
     let isSelected: Bool 

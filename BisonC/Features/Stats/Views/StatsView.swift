@@ -9,8 +9,9 @@ import SwiftUI
 
 struct StatsView: View {
     
-    @State private var isFiltered: Bool = false
-    let isStatsEmpty: Bool = false
+    
+    @ObservedObject var vm: StatsViewModel
+    let onCategoryTap: ([Article]) -> Void
     
     var body: some View {
         ZStack {
@@ -27,13 +28,19 @@ struct StatsView: View {
                 .padding(.top, getSafeAreaTop())
                 .padding()
                 
-                HStack {
-//                    FilterButton(isFiltered: $isFiltered, title: "Week")
-//                    FilterButton(isFiltered: $isFiltered, title: "Month")
-//                    FilterButton(isFiltered: $isFiltered, title: "All")
+                HStack(spacing: 12) {
+                    ForEach(StatsPeriod.allCases, id: \.self) { period in
+                        FilterButton(
+                            title: period.rawValue,
+                            isSelected: vm.selectedPeriod == period
+                        ) {
+                            vm.selectedPeriod = period
+                        }
+                    }
                 }
+                .padding(.horizontal)
                 
-                if isStatsEmpty {
+                if vm.isEmpty {
                     Spacer()
                     EmptyView(title: "Start reading to see stats.")
                         .padding(.bottom, getSafeAreaBottom() + 40)
@@ -49,7 +56,7 @@ struct StatsView: View {
                                     Spacer()
                                 }
                                 Spacer()
-                                Text("14")
+                                Text("\(vm.articlesRead)")
                                     .font(.customInriaSans(.bold, size: 24))
                                     .foregroundStyle(.beigeApp)
                                 Text("Articles")
@@ -64,7 +71,7 @@ struct StatsView: View {
                                         .foregroundStyle(.beigeApp)
                                     
                                     Text("+4 from last week")
-                                        .font(.customInriaSans(.bold, size: 16))
+                                        .font(.customInriaSans(.bold, size: 14))
                                         .foregroundStyle(.beigeApp)
                                 }
                                 
@@ -93,13 +100,13 @@ struct StatsView: View {
                                     Spacer()
                                 }
                                 Spacer()
-                                Text("40 minutes")
+                                Text("\(vm.readingTimeMinutes) minutes")
                                     .font(.customInriaSans(.bold, size: 24))
                                     .foregroundStyle(.beigeApp)
                                 
                                 Spacer()
                                 Text("All time this week")
-                                    .font(.customInriaSans(.bold, size: 16))
+                                    .font(.customInriaSans(.bold, size: 14))
                                     .foregroundStyle(.beigeApp)
                                 
                             }
@@ -130,48 +137,32 @@ struct StatsView: View {
                                 .frame(height: 2)
                                 .background(.beigeApp)
                             
-                            HStack {
-                                Text("Timeline")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.beigeApp)
-                                Spacer()
-                                Text("9 articles")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.beigeApp)
+                            ForEach(vm.topCategories) { category in
+                                VStack(spacing: 8) {
+                                    HStack {
+                                        Text(category.title)
+                                            .font(.customInriaSans(.regular, size: 18))
+                                            .foregroundStyle(.beigeApp)
+
+                                        Spacer()
+
+                                        Text("\(category.readCount) articles")
+                                            .font(.customInriaSans(.regular, size: 18))
+                                            .foregroundStyle(.beigeApp)
+                                    }
+
+                                    ProgressView(value: category.progress)
+                                        .progressViewStyle(.linear)
+                                        .tint(.brownAppCat)
+                                        .background(.beigeApp)
+                                        .scaleEffect(x: 1, y: 2)
+                                }
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    let articles = vm.getArticles(for: category.id)
+                                    onCategoryTap(articles)
+                                }
                             }
-                            ProgressView(value: 0.7)
-                                .progressViewStyle(.linear)
-                                .tint(.brownAppCat)
-                                .background(.beigeApp)
-                                .scaleEffect(x: 1, y: 2)
-                            HStack {
-                                Text("Myths & Facts")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.beigeApp)
-                                Spacer()
-                                Text("2 articles")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.beigeApp)
-                            }
-                            ProgressView(value: 0.3)
-                                .progressViewStyle(.linear)
-                                .tint(.brownAppCat)
-                                .background(.beigeApp)
-                                .scaleEffect(x: 1, y: 2)
-                            HStack {
-                                Text("Conservation")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.beigeApp)
-                                Spacer()
-                                Text("3 articles")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.beigeApp)
-                            }
-                            ProgressView(value: 0.4)
-                                .progressViewStyle(.linear)
-                                .tint(.brownAppCat)
-                                .background(.beigeApp)
-                                .scaleEffect(x: 1, y: 2)
                         }
                         .padding()
                         .background(
@@ -191,9 +182,7 @@ struct StatsView: View {
             
         }
         .navigationBarHidden(true)
+        .id(vm.topCategories.count)
     }
 }
 
-#Preview {
-    StatsView()
-}

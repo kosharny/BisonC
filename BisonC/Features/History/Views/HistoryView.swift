@@ -11,7 +11,6 @@ import CoreData
 struct HistoryView: View {
 
     @ObservedObject var vm: HistoryViewModel
-//    @State private var isFiltered: Bool = false
     
 
     var body: some View {
@@ -42,7 +41,7 @@ struct HistoryView: View {
                 .padding(.horizontal)
                 
 
-                if vm.filteredItems.isEmpty {
+                if vm.isEmpty {
                     Spacer()
                     EmptyView(title: "Your reading history will appear here.")
                         .padding(.bottom, getSafeAreaBottom() + 40)
@@ -59,7 +58,6 @@ struct HistoryView: View {
                                     vm.removeHistoryEntry(item.id)
                                 }
                             )
-                            .id(item.id)
                         }
 
                         Button {
@@ -77,5 +75,6 @@ struct HistoryView: View {
             }
         }
         .navigationBarHidden(true)
+        .id(vm.filteredItems.count)
     }
 }
