@@ -14,6 +14,7 @@ struct MainTabView: View {
     @StateObject private var router = AppRouter()
     @StateObject private var searchVM: SearchViewModel
     @StateObject private var historyVM: HistoryViewModel
+    @StateObject private var statsVM: StatsViewModel
     
     let container: NSPersistentContainer
     
@@ -24,6 +25,11 @@ struct MainTabView: View {
         ))
         _historyVM = StateObject(
                     wrappedValue: HistoryViewModel(
+                        repository: ArticlesRepositoryCoreData(container: container)
+                    )
+                )
+        _statsVM = StateObject(
+                    wrappedValue: StatsViewModel(
                         repository: ArticlesRepositoryCoreData(container: container)
                     )
                 )
@@ -77,11 +83,19 @@ struct MainTabView: View {
                 .tabItem {
                     Image("history")
                 }
-            
-            StatsView()
-                .tabItem {
-                    Image("statistics")
+            NavigationStack(path: $router.statsPath) {
+                StatsView(vm: statsVM) { articles in
+                    let ids = articles.map(\.id)
+                    router.statsPath.append(.results(articleIds: ids))
                 }
+                .navigationDestination(for: AppRouter.Route.self) { route in
+                    destination(for: route)
+                }
+            }
+            .tabItem {
+                Image("statistics")
+            }
+                
             NavigationStack(path: $router.settingsPath) {
                 SettingsView(
                     onAboutTap: {
@@ -101,6 +115,7 @@ struct MainTabView: View {
         .task {
             await searchVM.loadArticles()
             await historyVM.loadHistory()
+            await statsVM.loadStats()
         }
     }
     
@@ -112,9 +127,7 @@ struct MainTabView: View {
                 vm: searchVM,
                 onBackTap: { router.homePath.removeLast() },
                 onSearch: { articles in
-                    print("🚀 Filtered articles count:", articles.count)
                     let ids = articles.map(\.id)
-                    print("Filtered IDs:", ids)
                     router.homePath.append(.results(articleIds: ids))
                 }
             )
@@ -124,10 +137,18 @@ struct MainTabView: View {
                 articleIDs: articleIDs,
                 repository: ArticlesRepositoryCoreData(container: container),
                 onArticleTap: { id in
-                    router.openArticle(id)
+                    if !router.statsPath.isEmpty {
+                        router.statsPath.append(.article(id: id))
+                    } else if !router.homePath.isEmpty {
+                        router.homePath.append(.article(id: id))
+                    }
                 },
                 onBackTap: {
-                    router.homePath.removeLast()
+                    if !router.statsPath.isEmpty {
+                        router.statsPath.removeLast()
+                    } else {
+                        router.homePath.removeLast()
+                    }
                 }
             )
             

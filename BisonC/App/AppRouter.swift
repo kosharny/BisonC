@@ -12,12 +12,10 @@ import SwiftUI
 @MainActor
 final class AppRouter: ObservableObject {
     
-//    @Published var homePath = NavigationPath()
-//    @Published var favoritesPath = NavigationPath()
-//    @Published var settingsPath = NavigationPath()
     @Published var homePath: [Route] = []
     @Published var favoritesPath: [Route] = []
     @Published var settingsPath: [Route] = []
+    @Published var statsPath: [Route] = []
     
     enum Route: Hashable {
         case search

@@ -15,9 +15,15 @@ final class HistoryViewModel: ObservableObject {
     @Published var filteredItems: [HistoryItem] = []
     @Published var selectedPeriod: HistoryPeriod = .all {
         didSet {
-            objectWillChange.send()
+//            objectWillChange.send()
+            applyFilter()
         }
     }
+    
+    var isEmpty: Bool {
+        filteredItems.isEmpty
+    }
+
     
     private let repository: ArticlesRepository
     
@@ -89,8 +95,7 @@ final class HistoryViewModel: ObservableObject {
                 try await repository.deleteHistory(id: id)
                 await MainActor.run {
                     self.historyItems.removeAll { $0.id == id }
-                    self.applyFilter() // Снова пересчитываем фильтр
-                    print("✅ Экран должен обновиться. Осталось в фильтре: \(filteredItems.count)")
+                    self.applyFilter()
                 }
             } catch {
                 print("❌ Ошибка при удалении:", error)

@@ -86,9 +86,9 @@ final class ArticlesRepositoryCoreData: ArticlesRepository {
         
         entity.isFavorite.toggle()
         try context.save()
-        
-        
-        try context.save()
+//        
+//        
+//        try context.save()
     }
     
     func saveHistory(entry: HistoryEntry) async throws {
@@ -102,6 +102,8 @@ final class ArticlesRepositoryCoreData: ArticlesRepository {
         entity.progress = entry.progress
         
         try context.save()
+        
+        NotificationCenter.default.post(name: NSNotification.Name("HistoryUpdated"), object: nil)
     }
     
     func fetchHistory() async throws -> [HistoryEntry] {
@@ -126,6 +128,7 @@ final class ArticlesRepositoryCoreData: ArticlesRepository {
         if let entity = try context.fetch(request).first {
             context.delete(entity)
             try context.save()
+            NotificationCenter.default.post(name: NSNotification.Name("HistoryUpdated"), object: nil)
         }
     }
     
@@ -137,5 +140,7 @@ final class ArticlesRepositoryCoreData: ArticlesRepository {
         
         try context.execute(batchDeleteRequest)
         try context.save()
+        
+        NotificationCenter.default.post(name: NSNotification.Name("HistoryUpdated"), object: nil)
     }
 }

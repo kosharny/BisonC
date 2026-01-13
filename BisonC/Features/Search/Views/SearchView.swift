@@ -294,20 +294,7 @@ struct LastSearchView: View {
             
             Spacer()
         }
-//        .padding(.horizontal)
-//        .frame(maxWidth: .infinity, minHeight: 40)
-//        .background(
-//            Capsule()
-//                .fill(.beigeAppCat)
-//                .overlay(
-//                    Capsule()
-//                        .stroke(Color.beigeApp.opacity(0.3), lineWidth: 1)
-//                )
-//        )
     }
 }
 
 
-//#Preview {
-//    SearchView(onBackTap: { }, onSearch: { _ in })
-//}
