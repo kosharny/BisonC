@@ -16,7 +16,8 @@ struct HomeView: View {
         container: NSPersistentContainer,
         onSearchTap: @escaping () -> Void,
         onArticleTap: @escaping (String) -> Void,
-        onCategoryTap: @escaping ([String]) -> Void
+        onCategoryTap: @escaping ([String]) -> Void,
+        onQuickAccessTap: @escaping (String) -> Void
     ) {
         _vm = StateObject(
             wrappedValue: HomeViewModel(
@@ -26,12 +27,14 @@ struct HomeView: View {
         self.onSearchTap = onSearchTap
         self.onArticleTap = onArticleTap
         self.onCategoryTap = onCategoryTap
+        self.onQuickAccessTap = onQuickAccessTap
     }
     
     
     let onSearchTap: () -> Void
     let onArticleTap: (String) -> Void
     let onCategoryTap: ([String]) -> Void
+    let onQuickAccessTap: (String) -> Void
     
     var body: some View {
         ZStack {
@@ -111,25 +114,21 @@ struct HomeView: View {
                             .padding(.horizontal)
                         
                         HStack(alignment: .top) {
-                            QuickAccessItemView(
-                                title: "Timeline",
-                                icon: Image("timeline")
-                            )
+                            QuickAccessItemView(title: "Timeline", icon: Image("timeline")) {
+                                onQuickAccessTap("Timeline")
+                            }
                             
-                            QuickAccessItemView(
-                                title: "Tribes & Culture",
-                                icon: Image("tribes")
-                            )
+                            QuickAccessItemView(title: "Tribes & Culture", icon: Image("tribes")) {
+                                onQuickAccessTap("Culture & Tribes")
+                            }
                             
-                            QuickAccessItemView(
-                                title: "Conservation",
-                                icon: Image("conservation")
-                            )
+                            QuickAccessItemView(title: "Conservation", icon: Image("conservation")) {
+                                onQuickAccessTap("Conservation")
+                            }
                             
-                            QuickAccessItemView(
-                                title: "Species",
-                                icon: Image("species")
-                            )
+                            QuickAccessItemView(title: "Species", icon: Image("species")) {
+                                onQuickAccessTap("Species")
+                            }
                         }
                     }
                     
@@ -194,10 +193,6 @@ struct HomeView: View {
         }
     }
 }
-
-//#Preview {
-//    HomeView(onSearchTap: {}, onArticleTap: {_ in })
-//}
 
 
 

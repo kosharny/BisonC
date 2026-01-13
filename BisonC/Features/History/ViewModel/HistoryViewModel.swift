@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import CoreData
+import UIKit
 
 @MainActor
 final class HistoryViewModel: ObservableObject {
@@ -15,7 +17,6 @@ final class HistoryViewModel: ObservableObject {
     @Published var filteredItems: [HistoryItem] = []
     @Published var selectedPeriod: HistoryPeriod = .all {
         didSet {
-//            objectWillChange.send()
             applyFilter()
         }
     }
@@ -113,6 +114,41 @@ final class HistoryViewModel: ObservableObject {
             } catch {
                 print("❌ Failed to clear history:", error)
             }
+        }
+    }
+    
+    func exportHistory() {
+        var exportText = "My Reading History\nGenerated on \(Date().formatted())\n\n"
+        
+        for item in historyItems {
+            let date = item.entry.openedAt.formatted(date: .abbreviated, time: .shortened)
+            exportText += "• \(item.article.title)\n  Read on: \(date)\n  Category: \(item.article.category)\n\n"
+        }
+        
+        let filename = "ReadingHistory.txt"
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+        
+        do {
+            try exportText.write(to: tempURL, atomically: true, encoding: .utf8)
+            presentShareSheet(with: tempURL)
+        } catch {
+            print("❌ Export failed: \(error)")
+        }
+    }
+
+    private func presentShareSheet(with url: URL) {
+        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            
+            if let popover = activityVC.popoverPresentationController {
+                popover.sourceView = rootVC.view
+                popover.sourceRect = CGRect(x: rootVC.view.bounds.midX, y: rootVC.view.bounds.midY, width: 0, height: 0)
+                popover.permittedArrowDirections = []
+            }
+            
+            rootVC.present(activityVC, animated: true)
         }
     }
 }

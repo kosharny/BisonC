@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var isEnter: Bool = true
-    @State private var isNoEnter: Bool = false
+    @ObservedObject var vm: SettingsViewModel
     
     let onAboutTap: () -> Void
+    let onExportData: () -> Void   
+    let onResetHistory: () -> Void
     
     var body: some View {
             ZStack {
@@ -43,34 +44,8 @@ struct SettingsView: View {
                                 .foregroundStyle(.brownApp)
                             
                             VStack(alignment: .leading) {
-                                Text("Theme")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.darkTextTitleApp)
-                                HStack {
-                                    PreferencesCardButton(title: "Light", isActive: $isEnter)
-                                    PreferencesCardButton(title: "Dark", isActive: $isNoEnter)
-                                    PreferencesCardButton(title: "System", isActive: $isNoEnter)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity, maxHeight: 60)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(.yellowApp)
-                                )
-                                Text("Text size")
-                                    .font(.customInriaSans(.regular, size: 18))
-                                    .foregroundStyle(.darkTextTitleApp)
-                                HStack {
-                                    PreferencesCardButton(title: "Small", isActive: $isNoEnter)
-                                    PreferencesCardButton(title: "Medium", isActive: $isEnter)
-                                    PreferencesCardButton(title: "Large", isActive: $isNoEnter)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity, maxHeight: 60)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(.yellowApp)
-                                )
+                                themeSelector
+                                textSizeSelector
                             }
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -86,13 +61,13 @@ struct SettingsView: View {
                             
                             VStack(alignment: .leading) {
                                 
-                                DataCardView(title: "Export Data")
+                                DataCardView(title: "Export Data", onTap: onExportData)
                                 
                                 Divider()
                                     .frame(height: 2)
                                     .background(.beigeApp)
                                 
-                                DataCardView(title: "Reset History")
+                                DataCardView(title: "Reset History", onTap: onResetHistory)
                                 
                                 Divider()
                                     .frame(height: 2)
@@ -123,11 +98,51 @@ struct SettingsView: View {
             }
             .navigationBarHidden(true)
     }
+    
+    private var themeSelector: some View {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Theme")
+                    .font(.customInriaSans(.regular, size: 18))
+                    .foregroundStyle(.darkTextTitleApp)
+                
+                HStack(spacing: 0) {
+                    ForEach(AppTheme.allCases, id: \.self) { theme in
+                        PreferencesCardButton(
+                            title: theme.rawValue,
+                            isSelected: vm.theme == theme
+                        ) {
+                            vm.theme = theme
+                            vm.applyTheme()
+                        }
+                    }
+                }
+                .padding(4)
+                .background(RoundedRectangle(cornerRadius: 16).fill(.yellowApp))
+            }
+        }
+        
+        private var textSizeSelector: some View {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Text size")
+                    .font(.customInriaSans(.regular, size: 18))
+                    .foregroundStyle(.darkTextTitleApp)
+                
+                HStack(spacing: 0) {
+                    ForEach(AppTextSize.allCases, id: \.self) { size in
+                        PreferencesCardButton(
+                            title: size.rawValue,
+                            isSelected: vm.textSize == size
+                        ) {
+                            vm.textSize = size
+                        }
+                    }
+                }
+                .padding(4)
+                .background(RoundedRectangle(cornerRadius: 16).fill(.yellowApp))
+            }
+        }
 }
 
-#Preview {
-    SettingsView(onAboutTap: { })
-}
 
 struct SettingsButton: View {
     let title: String
@@ -156,6 +171,8 @@ struct SettingsButton: View {
 
 struct DataCardView: View {
     let title: String
+    let onTap: () -> Void
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -169,7 +186,7 @@ struct DataCardView: View {
             }
             Spacer()
             Button {
-                //
+                onTap()
             } label: {
                 Text(title)
                     .font(.customInriaSans(.regular, size: 16))
@@ -190,23 +207,23 @@ struct DataCardView: View {
 
 struct PreferencesCardButton: View {
     let title: String
-    @Binding var isActive: Bool
+    let isSelected: Bool
+    let action: () -> Void
     
     var body: some View {
-        Button {
-            isActive.toggle()
-        } label: {
+        Button(action: action) {
             Text(title)
                 .font(.customInriaSans(.regular, size: 14))
                 .foregroundStyle(.darkTextTitleApp)
-                .frame(minWidth: 50)
-                .padding()
+                .frame(maxWidth: .infinity) 
+                .padding(.vertical, 12)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 12)
                         .fill(.lightBrownApp)
-                        .opacity(isActive ? 1 : 0)
+                        .opacity(isSelected ? 1 : 0)
                 )
         }
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
     }
 }
 

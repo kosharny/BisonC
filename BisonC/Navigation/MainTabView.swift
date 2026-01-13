@@ -10,11 +10,13 @@ import CoreData
 
 struct MainTabView: View {
     
-    
+    @State private var selectedTab: Int = 0
     @StateObject private var router = AppRouter()
     @StateObject private var searchVM: SearchViewModel
     @StateObject private var historyVM: HistoryViewModel
     @StateObject private var statsVM: StatsViewModel
+    
+    @StateObject private var settingsVM = SettingsViewModel()
     
     let container: NSPersistentContainer
     
@@ -37,7 +39,7 @@ struct MainTabView: View {
     
     
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             NavigationStack(path: $router.homePath) {
                 HomeView(
                     container: container,
@@ -55,6 +57,22 @@ struct MainTabView: View {
                             
                             router.homePath.append(.results(articleIds: ids))
                         }
+                    },
+                    onQuickAccessTap: { title in
+                        Task {
+                            let allArticles = try? await ArticlesRepositoryCoreData(container: container).fetchAll()
+                            
+                            let filtered = allArticles?.filter { article in
+                                article.category.lowercased() == title.lowercased() ||
+                                (title == "Tribes & Culture" && article.category == "Tribes")
+                            } ?? []
+                            
+                            let ids = filtered.map { $0.id }
+                            
+                            await MainActor.run {
+                                router.homePath.append(.results(articleIds: ids))
+                            }
+                        }
                     }
                 )
                 .navigationDestination(for: AppRouter.Route.self) { route in
@@ -64,6 +82,8 @@ struct MainTabView: View {
             .tabItem {
                 Image("home")
             }
+            .tag(0)
+            
             NavigationStack(path: $router.favoritesPath) {
                 FavoritesView(
                     container: container,
@@ -78,11 +98,13 @@ struct MainTabView: View {
             .tabItem {
                 Image("favorites")
             }
+            .tag(1)
             
             HistoryView(vm: historyVM)
                 .tabItem {
                     Image("history")
                 }
+                .tag(2)
             NavigationStack(path: $router.statsPath) {
                 StatsView(vm: statsVM) { articles in
                     let ids = articles.map(\.id)
@@ -95,11 +117,19 @@ struct MainTabView: View {
             .tabItem {
                 Image("statistics")
             }
+            .tag(3)
                 
             NavigationStack(path: $router.settingsPath) {
                 SettingsView(
+                    vm: settingsVM,
                     onAboutTap: {
                         router.settingsPath.append(AppRouter.Route.about)
+                    },
+                    onExportData: {
+                        historyVM.exportHistory()
+                    },
+                    onResetHistory: {
+                        historyVM.clearAllHistory() 
                     }
                 )
                 .navigationDestination(for: AppRouter.Route.self) { route in
@@ -109,6 +139,7 @@ struct MainTabView: View {
             .tabItem {
                 Image("settings")
             }
+            .tag(4)
         }
         .toolbarBackground(.thickMaterial, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
@@ -116,6 +147,12 @@ struct MainTabView: View {
             await searchVM.loadArticles()
             await historyVM.loadHistory()
             await statsVM.loadStats()
+        }
+        .environmentObject(settingsVM)
+        .id(settingsVM.textSize)
+        .onAppear {
+            selectedTab = 0
+            settingsVM.applyTheme()
         }
     }
     
