@@ -12,6 +12,7 @@ struct EmptyView: View {
     let title: String
     var buttonTitle: String = "EXPLORE ARTICLES"
     
+    
     var body: some View {
         VStack {
             Image("emptyBg")

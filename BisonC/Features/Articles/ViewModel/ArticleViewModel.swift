@@ -15,6 +15,7 @@ final class ArticleViewModel: ObservableObject {
     
     private let repository: ArticlesRepository
     private let articleId: String
+    private var currentHistoryId: String?
     
     init(articleId: String, repository: ArticlesRepository) {
         self.articleId = articleId
@@ -27,12 +28,15 @@ final class ArticleViewModel: ObservableObject {
                 if let article = try await repository.fetchById(articleId) {
                     self.article = article.toUIModel()
                     
+                    let historyId = UUID().uuidString
+                    self.currentHistoryId = historyId
+                    
                     let historyEntry = HistoryEntry(
                         id: UUID().uuidString,
                         articleId: article.id,
                         openedAt: Date(),
                         categoryId: article.category,
-                        progress: 0.0
+                        progress: 25.0
                     )
                     
                     do {
@@ -51,6 +55,31 @@ final class ArticleViewModel: ObservableObject {
                 self.errorMessage = error.localizedDescription
             }
         }
+    }
+    
+    func updateProgress(to value: Double) {
+        guard let historyId = currentHistoryId, let article = article else { return }
+        
+        Task {
+            let updatedEntry = HistoryEntry(
+                id: historyId,
+                articleId: article.id,
+                openedAt: Date(),
+                categoryId: article.category,
+                progress: value
+            )
+            
+            do {
+                try await repository.saveHistory(entry: updatedEntry)
+                notifyHistoryUpdate()
+            } catch {
+                print("❌ Failed to update progress:", error)
+            }
+        }
+    }
+    
+    private func notifyHistoryUpdate() {
+        NotificationCenter.default.post(name: NSNotification.Name("HistoryUpdated"), object: nil)
     }
     
     @MainActor

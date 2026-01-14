@@ -198,6 +198,13 @@ struct MainTabView: View {
                     } else {
                         router.favoritesPath.removeLast()
                     }
+                },
+                onReady: {
+                    if !router.homePath.isEmpty { router.homePath.removeAll() }
+                    if !router.favoritesPath.isEmpty { router.favoritesPath.removeAll() }
+                    if !router.statsPath.isEmpty { router.statsPath.removeAll() }
+                    
+                    selectedTab = 0
                 }
             )
         case .about:

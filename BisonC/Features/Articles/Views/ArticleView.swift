@@ -13,10 +13,12 @@ struct ArticleView: View {
     
     let articleId: String
     let onBackTap: () -> Void
+    let onReady: () -> Void
     
-    init(articleId: String, repository: ArticlesRepository, onBackTap: @escaping () -> Void) {
+    init(articleId: String, repository: ArticlesRepository, onBackTap: @escaping () -> Void, onReady: @escaping () -> Void) {
         self.articleId = articleId
         self.onBackTap = onBackTap
+        self.onReady = onReady
         _vm = StateObject(wrappedValue: ArticleViewModel(articleId: articleId, repository: repository))
     }
     
@@ -110,7 +112,8 @@ struct ArticleView: View {
                             }
                             
                             ReadyButton {
-                                onBackTap()
+                                vm.updateProgress(to: 100)
+                                onReady()
                             }
                         }
                         .padding(.horizontal)

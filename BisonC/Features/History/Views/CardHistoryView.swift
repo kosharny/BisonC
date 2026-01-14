@@ -30,10 +30,10 @@ struct CardHistoryView: View {
                 CategoryTagView(title: categorieName)
                 
                 VStack(alignment: .trailing) {
-                    Text("\(progress)%")
+                    Text("\(Int(progress))%")
                         .font(.customInriaSans(.light, size: 14))
                         .foregroundStyle(.darkTextApp)
-                    ProgressView(value: progress)
+                    ProgressView(value: min(max(progress / 100, 0), 1))
                         .progressViewStyle(.linear)
                         .tint(.brownApp)
                         .background(.brownApp.opacity(0.2))
