@@ -6,141 +6,225 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct SettingsView: View {
+    @StateObject private var store = StoreManager()
     @ObservedObject var vm: SettingsViewModel
+    @State private var activeAlert: AlertData?
+    @State private var showAlert = false
     
     let onAboutTap: () -> Void
-    let onExportData: () -> Void   
+    let onExportData: () -> Void
     let onResetHistory: () -> Void
     
     var body: some View {
-            ZStack {
-                BackgroundView()
-                
-                VStack {
-                    HStack {
-                        Image("settingsLogo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 50)
-                        Spacer()
-                    }
-                    .padding(.top, getSafeAreaTop())
-                    .padding()
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading) {
-                            Text("Premium tools")
-                                .font(.customPlayfairDisplaySC(.bold, size: 18))
-                                .foregroundStyle(.brownApp)
-                            
-                            HStack(spacing: 16) {
-                                PremiumToolsCardView()
-                                PremiumToolsCardView()
-                            }
-                            
-                            Text("Preferences")
-                                .font(.customPlayfairDisplaySC(.bold, size: 18))
-                                .foregroundStyle(.brownApp)
-                            
-                            VStack(alignment: .leading) {
-                                themeSelector
-                                textSizeSelector
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(.beigeApp)
-                                    .shadow(radius: 4, x: 0, y: 4)
+        ZStack {
+            BackgroundView()
+            
+            VStack {
+                HStack {
+                    Image("settingsLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 50)
+                    Spacer()
+                }
+                .padding(.top, getSafeAreaTop())
+                .padding()
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading) {
+                        Text("Premium tools")
+                            .font(.customPlayfairDisplaySC(.bold, size: 18))
+                            .foregroundStyle(.brownApp)
+                        HStack(spacing: 16) {
+                            let exportProduct = store.products.first { $0.id == "premium_export_data" }
+                            PremiumToolsCardView(
+                                title: "Export Data",
+                                subtitle: "Export your reading history to a file",
+                                price: exportProduct?.displayPrice ?? "$1.99",
+                                isPurchased: store.purchasedIDs.contains("premium_export_data"),
+                                onUnlockTap: {
+                                    handlePurchase(product: exportProduct, isExport: true)
+                                },
+                                onPrimaryActionTap: {
+                                    onExportData()
+                                }
                             )
                             
-                            Text("Data")
-                                .font(.customPlayfairDisplaySC(.bold, size: 18))
-                                .foregroundStyle(.brownApp)
-                            
-                            VStack(alignment: .leading) {
-                                
-                                DataCardView(title: "Export Data", onTap: onExportData)
-                                
-                                Divider()
-                                    .frame(height: 2)
-                                    .background(.beigeApp)
-                                
-                                DataCardView(title: "Reset History", onTap: onResetHistory)
-                                
-                                Divider()
-                                    .frame(height: 2)
-                                    .background(.beigeApp)
-                                
-                                SettingsButton(title: "Restore Purchases", onTap: { })
-                                
-                                
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(.beigeApp)
-                                    .shadow(radius: 4, x: 0, y: 4)
+                            let resetProduct = store.products.first { $0.id == "premium_reset_history" }
+                            PremiumToolsCardView(
+                                title: "Reset History",
+                                subtitle: "Clear all history & stats with one tap",
+                                price: resetProduct?.displayPrice ?? "$0.99",
+                                isPurchased: store.purchasedIDs.contains("premium_reset_history"),
+                                onUnlockTap: {
+                                    handlePurchase(product: resetProduct, isExport: false)
+                                },
+                                onPrimaryActionTap: {
+                                    triggerAlert(.resetConfirm)
+                                }
                             )
-                            
-                            Text("About")
-                                .font(.customPlayfairDisplaySC(.bold, size: 18))
-                                .foregroundStyle(.brownApp)
-                            SettingsButton(title: "About the application", onTap: onAboutTap)
-                                .padding(.horizontal)
-                                .padding(.bottom, getSafeAreaBottom() + 50)
                         }
+                        
+                        Text("Preferences")
+                            .font(.customPlayfairDisplaySC(.bold, size: 18))
+                            .foregroundStyle(.brownApp)
+                        
+                        VStack(alignment: .leading) {
+                            themeSelector
+                            textSizeSelector
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.beigeApp)
+                                .shadow(radius: 4, x: 0, y: 4)
+                        )
+                        
+                        Text("Data")
+                            .font(.customPlayfairDisplaySC(.bold, size: 18))
+                            .foregroundStyle(.brownApp)
+                        
+                        VStack(alignment: .leading) {
+                            
+                            DataCardView(
+                                title: "Export Data",
+                                isPurchased: store.purchasedIDs.contains("premium_export_data"),
+                                onTap: onExportData
+                            )
+                            
+                            Divider()
+                                .frame(height: 2)
+                                .background(.beigeApp)
+                            
+                            DataCardView(
+                                title: "Reset History",
+                                isPurchased: store.purchasedIDs.contains("premium_reset_history"),
+                                onTap: {
+                                    triggerAlert(.resetConfirm)
+                                }
+                            )
+                            
+                            Divider()
+                                .frame(height: 2)
+                                .background(.beigeApp)
+                            
+                            SettingsButton(title: "Restore Purchases", onTap: {
+                                handleRestore()
+                            })
+                            
+                            
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.beigeApp)
+                                .shadow(radius: 4, x: 0, y: 4)
+                        )
+                        
+                        Text("About")
+                            .font(.customPlayfairDisplaySC(.bold, size: 18))
+                            .foregroundStyle(.brownApp)
+                        SettingsButton(title: "About the application", onTap: onAboutTap)
+                            .padding(.horizontal)
+                            .padding(.bottom, getSafeAreaBottom() + 50)
                     }
                 }
-                .padding(.horizontal)
             }
-            .navigationBarHidden(true)
+            .padding(.horizontal)
+            
+            if showAlert, let alertData = activeAlert {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .onTapGesture { showAlert = false }
+                
+                CustomAlertCard(
+                    data: alertData,
+                    onAction: {
+                        if alertData.title == "Reset History?" {
+                            onResetHistory() // Сама логика сброса
+                        }
+                        showAlert = false
+                    },
+                    onCancel: {
+                        showAlert = false
+                    }
+                )
+                .transition(.scale(scale: 0.9).combined(with: .opacity))
+            }
+        }
+        .navigationBarHidden(true)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: showAlert)
     }
     
     private var themeSelector: some View {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Theme")
-                    .font(.customInriaSans(.regular, size: 18))
-                    .foregroundStyle(.darkTextTitleApp)
-                
-                HStack(spacing: 0) {
-                    ForEach(AppTheme.allCases, id: \.self) { theme in
-                        PreferencesCardButton(
-                            title: theme.rawValue,
-                            isSelected: vm.theme == theme
-                        ) {
-                            vm.theme = theme
-                            vm.applyTheme()
-                        }
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Theme")
+                .font(.customInriaSans(.regular, size: 18))
+                .foregroundStyle(.darkTextTitleApp)
+            
+            HStack(spacing: 0) {
+                ForEach(AppTheme.allCases, id: \.self) { theme in
+                    PreferencesCardButton(
+                        title: theme.rawValue,
+                        isSelected: vm.theme == theme
+                    ) {
+                        vm.theme = theme
+                        vm.applyTheme()
                     }
                 }
-                .padding(4)
-                .background(RoundedRectangle(cornerRadius: 16).fill(.yellowApp))
             }
+            .padding(4)
+            .background(RoundedRectangle(cornerRadius: 16).fill(.yellowApp))
         }
-        
-        private var textSizeSelector: some View {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Text size")
-                    .font(.customInriaSans(.regular, size: 18))
-                    .foregroundStyle(.darkTextTitleApp)
-                
-                HStack(spacing: 0) {
-                    ForEach(AppTextSize.allCases, id: \.self) { size in
-                        PreferencesCardButton(
-                            title: size.rawValue,
-                            isSelected: vm.textSize == size
-                        ) {
-                            vm.textSize = size
-                        }
+    }
+    
+    private var textSizeSelector: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Text size")
+                .font(.customInriaSans(.regular, size: 18))
+                .foregroundStyle(.darkTextTitleApp)
+            
+            HStack(spacing: 0) {
+                ForEach(AppTextSize.allCases, id: \.self) { size in
+                    PreferencesCardButton(
+                        title: size.rawValue,
+                        isSelected: vm.textSize == size
+                    ) {
+                        vm.textSize = size
                     }
                 }
-                .padding(4)
-                .background(RoundedRectangle(cornerRadius: 16).fill(.yellowApp))
             }
+            .padding(4)
+            .background(RoundedRectangle(cornerRadius: 16).fill(.yellowApp))
         }
+    }
+    
+    private func triggerAlert(_ data: AlertData) {
+        activeAlert = data
+        showAlert = true
+    }
+    
+    private func handlePurchase(product: Product?, isExport: Bool) {
+        guard let product = product else { return }
+        Task {
+            let success = await store.purchase(product)
+            triggerAlert(success ? .purchaseSuccess(isExport: isExport) : .purchaseFailed)
+        }
+    }
+    
+    private func handleRestore() {
+        Task {
+            await store.restorePurchases()
+            // Проверяем, разблокировалось ли что-то после восстановления
+            let restored = !store.purchasedIDs.isEmpty
+            triggerAlert(restored ? .restoreSuccess : .restoreFailed)
+        }
+    }
 }
 
 
@@ -154,10 +238,10 @@ struct SettingsButton: View {
             Text(title)
                 .font(.customInriaSans(.regular, size: 16))
                 .foregroundStyle(.beigeApp)
-                
+            
         }
         .padding()
-         .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity)
         .background(
             Capsule()
                 .fill(.brownAppCat)
@@ -171,6 +255,7 @@ struct SettingsButton: View {
 
 struct DataCardView: View {
     let title: String
+    let isPurchased: Bool
     let onTap: () -> Void
     
     var body: some View {
@@ -179,10 +264,12 @@ struct DataCardView: View {
                 Text(title)
                     .font(.customInriaSans(.regular, size: 18))
                     .foregroundStyle(.darkTextTitleApp)
-                Image("premiumLabel")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 60)
+                if !isPurchased {
+                    Image("premiumLabel")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 60)
+                }
             }
             Spacer()
             Button {
@@ -201,6 +288,8 @@ struct DataCardView: View {
                             .stroke(Color.brownAppCat.opacity(0.5))
                     )
             }
+            .disabled(!isPurchased)
+            .opacity(isPurchased ? 1.0 : 0.6)
         }
     }
 }
@@ -215,7 +304,7 @@ struct PreferencesCardButton: View {
             Text(title)
                 .font(.customInriaSans(.regular, size: 14))
                 .foregroundStyle(.darkTextTitleApp)
-                .frame(maxWidth: .infinity) 
+                .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
@@ -224,60 +313,5 @@ struct PreferencesCardButton: View {
                 )
         }
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
-    }
-}
-
-struct PremiumToolsCardView: View {
-    var body: some View {
-        VStack(alignment: .leading) {
-            ZStack {
-                Text("Export Data. Export your reading history to a file")
-                    .opacity(0)
-                Image("premiumLock")
-                    .resizable()
-                    .scaledToFit()
-            }
-            Text("Export Data")
-                .font(.customInriaSans(.bold, size: 16))
-                .foregroundStyle(.darkTextTitleApp)
-            Text("Export your reading history to a file")
-                .font(.customInriaSans(.light, size: 14))
-                .foregroundStyle(.darkTextTitleApp)
-            
-            HStack {
-                Text("$1.99")
-                    .font(.customInriaSans(.bold, size: 16))
-                    .foregroundStyle(.darkTextTitleApp)
-                Spacer()
-                Button {
-                    //
-                } label: {
-                    Text("Unlock")
-                        .font(.customInriaSans(.regular, size: 16))
-                        .foregroundStyle(.beigeApp)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(.brownAppCat)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color.brownAppCat.opacity(0.5))
-                        )
-                }
-                
-            }
-            
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.beigeApp)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.beigeApp.opacity(0.5))
-                .shadow(radius: 4, x: 0, y: 4)
-        )
     }
 }
