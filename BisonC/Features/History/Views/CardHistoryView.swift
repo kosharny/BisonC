@@ -12,6 +12,7 @@ struct CardHistoryView: View {
     let readingDate: String
     let categorieName: String
     let progress: Double
+    let isPurchased: Bool
     let onDelete: () -> Void
     
     var body: some View {
@@ -57,13 +58,14 @@ struct CardHistoryView: View {
                         
                         
                     }
-                    
-                    HStack {
-                        Spacer()
-                        Image("premiumLabel")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: 50)
+                    if !isPurchased {
+                        HStack {
+                            Spacer()
+                            Image("premiumLabel")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: 50)
+                        }
                     }
                 }
                 .padding()
@@ -73,6 +75,7 @@ struct CardHistoryView: View {
                         .fill(Color.redAppColor.opacity(0.5))
                 )
             }
+            .disabled(!isPurchased)
         }
         .padding()
         .background(

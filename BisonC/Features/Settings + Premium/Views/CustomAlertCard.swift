@@ -42,16 +42,15 @@ struct CustomAlertCard: View {
             VStack(spacing: 8) {
                 Text(data.title)
                     .font(.customInriaSans(.bold, size: 18))
-                    .foregroundStyle(Color.darkTextApp)
+                    .foregroundStyle(Color.darkTextTitleApp)
                 
                 Text(data.message)
                     .font(.customInriaSans(.regular, size: 14))
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(Color.darkTextApp)
+                    .foregroundStyle(Color.darkTextTitleApp)
                     .padding(.horizontal, 10)
             }
 
-            // Кнопки
             HStack(spacing: 15) {
                 if data.type == .confirmation {
                     Button(action: { onCancel?() }) {
@@ -105,6 +104,46 @@ struct CustomAlertCard: View {
         default: return Color(red: 0.55, green: 0.4, blue: 0.3)
         }
     }
+}
+
+extension AlertData {
+    static let resetConfirm = AlertData(
+        type: .confirmation,
+        title: "Reset History?",
+        message: "Are you sure you want to clear all reading history and statistics? This action cannot be undone.",
+        primaryButtonTitle: "Reset"
+    )
+    
+    static func purchaseSuccess(isExport: Bool) -> AlertData {
+        let feature = isExport ? "'Export Data' feature. You can now export your reading history." : "\"Reset History\" feature. You can now delete your reading history."
+        return AlertData(
+            type: .success,
+            title: "Purchase Successful!",
+            message: "You have successfully unlocked the \(feature)",
+            primaryButtonTitle: "OK"
+        )
+    }
+    
+    static let purchaseFailed = AlertData(
+        type: .error,
+        title: "Purchase Failed",
+        message: "There was an issue processing your payment. Please check your connection or try again later.",
+        primaryButtonTitle: "Try Again"
+    )
+    
+    static let restoreSuccess = AlertData(
+        type: .success,
+        title: "Restore Successful",
+        message: "Your previous purchases have been restored. 'Export Data' and 'Reset History' are now unlocked.",
+        primaryButtonTitle: "OK"
+    )
+    
+    static let restoreFailed = AlertData(
+        type: .error,
+        title: "Restore Failed",
+        message: "We couldn't find any previous purchases to restore. Please ensure you are logged in with the correct account.",
+        primaryButtonTitle: "OK"
+    )
 }
 
 #Preview {

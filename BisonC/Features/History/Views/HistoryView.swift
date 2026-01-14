@@ -11,6 +11,7 @@ import CoreData
 struct HistoryView: View {
 
     @ObservedObject var vm: HistoryViewModel
+    @StateObject private var store = StoreManager()
     
 
     var body: some View {
@@ -54,11 +55,14 @@ struct HistoryView: View {
                                 readingDate: item.entry.openedAt.formattedForHistory(),
                                 categorieName: item.article.category,
                                 progress: item.entry.progress,
+                                isPurchased: store.purchasedIDs.contains("premium_reset_history"),
                                 onDelete: {
                                     vm.removeHistoryEntry(item.id)
                                 }
                             )
                         }
+                        
+                        let isExportPurchased = store.purchasedIDs.contains("premium_export_data")
 
                         Button {
                             vm.exportHistory()
@@ -68,6 +72,7 @@ struct HistoryView: View {
                                 .scaledToFit()
                                 .frame(maxHeight: 50)
                         }
+                        .disabled(!isExportPurchased)
                         .padding(.bottom, getSafeAreaBottom() + 50)
                     }
                     .padding(.horizontal)
