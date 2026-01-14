@@ -101,7 +101,7 @@ struct OnboardingPageView: View {
             Spacer()
 
             Button("SKIP") {
-                selection = total - 1
+                 onFinish()
             }
             .font(.customPlayfairDisplaySC(.bold, size: 18))
             .padding(.horizontal, 4)
